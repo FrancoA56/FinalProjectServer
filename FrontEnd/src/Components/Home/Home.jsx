@@ -1,6 +1,6 @@
-import style from "./home.module.css";
+import style from "./Home.module.css";
 
-export const home = () => {
+const Home = () => {
   return (
     <>
       <div className={style.title}>
@@ -9,3 +9,5 @@ export const home = () => {
     </>
   );
 };
+
+export default Home
