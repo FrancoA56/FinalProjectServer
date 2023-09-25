@@ -8,7 +8,7 @@ const productRouter = Router();
 
 productRouter.get("/", getProductController);
 productRouter.post("/", addProductController)
-productRouter.put("/", editProductController)
+productRouter.put("/:id", editProductController)
 productRouter.delete("/:id", disableProductController)
 
 export default productRouter;
