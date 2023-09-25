@@ -1,9 +1,12 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import productRouter from "./product";
+import shopRouter from "./shop";
+import userRouter from "./user";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("Backend up and working!");
-});
+router.use("/product", productRouter)
+router.use("/shop", shopRouter)
+router.use("/user", userRouter)
 
 export default router;
