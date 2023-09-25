@@ -34,6 +34,9 @@ class Preset extends Model<Preset> {
   @Column
   name!: string;
 
+  @Column
+  price!: number;
+
   @Column({
     type: "ENUM",
     values: Object.values(PresetTypes),
