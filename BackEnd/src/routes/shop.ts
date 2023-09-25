@@ -1,9 +1,8 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import addShopController from "../controllers/shop/addShopController";
 
 const shopRouter = Router();
 
-shopRouter.get("/", (req: Request, res: Response) => {
-  res.send("Request to shop");
-});
+shopRouter.post("/", addShopController);
 
 export default shopRouter;
