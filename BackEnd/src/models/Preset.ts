@@ -44,6 +44,10 @@ class Preset extends Model<Preset> {
   type!: PresetTypes;
 
   @IsDate
+  @Column
+  releasedAt!: Date;
+
+  @IsDate
   @CreatedAt
   createdAt!: Date;
 
