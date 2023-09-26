@@ -1,11 +1,12 @@
 [{
     "id": "number",
     "name": "string",
-    "released": "date",
+    "createdAt": "date",
     "price": "number",
-    "category": "string",
-    "reviews": "array",
-    "rating": "number",
-    "purchased": "number",
-    "allow": "boolean"
+    "type": "string",
+    "purchased": "Relacion entre modelo y usuario",
+    "isDisabled": "boolean"
+},{  
+  "reviews": "array con reviews",
+  "rating": "promedio de rating de reviews"
 }]
