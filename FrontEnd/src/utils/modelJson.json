@@ -1,0 +1,11 @@
+[{
+    "id": "number",
+    "name": "string",
+    "released": "date",
+    "price": "number",
+    "category": "string",
+    "reviews": "array",
+    "rating": "number",
+    "purchased": "number",
+    "allow": "boolean"
+}]
