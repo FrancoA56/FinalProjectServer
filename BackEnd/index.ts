@@ -8,6 +8,6 @@ sequelize
     console.log("Database synced correctly");
     server.listen(PORT, () => console.log("Server listening on port " + PORT));
   })
-  .catch((error) => {
+  .catch((error:Error) => {
     console.error(error);
   });
