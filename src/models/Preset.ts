@@ -43,6 +43,13 @@ class Preset extends Model<Preset> {
   })
   type!: PresetTypes;
 
+  @Column
+  isDisabled!: boolean;
+
+  @IsDate
+  @Column
+  releasedAt!: Date;
+
   @IsDate
   @CreatedAt
   createdAt!: Date;

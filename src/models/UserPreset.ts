@@ -4,6 +4,7 @@ import {
   Column,
   Validate,
   IsEmail,
+  Length,
   BelongsToMany,
 } from "sequelize-typescript";
 import User from "./User";
@@ -24,6 +25,10 @@ class UserPreset extends Model<UserPreset> {
   })
   @Column
   rating!: number;
+
+  @Length({ min: 4, max: 200 })
+  @Column
+  ratingMessage!: string;
 
   @BelongsToMany(() => User, () => UserPreset)
   user!: User;
