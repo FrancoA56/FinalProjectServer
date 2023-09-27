@@ -15,7 +15,7 @@ const addProductController = async (
     const product = await addProductHandler(id, name, type);
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
