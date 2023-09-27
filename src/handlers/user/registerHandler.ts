@@ -7,11 +7,11 @@ const registerHandler = async (
   logo: string | undefined
 ) => {
   if (!email || !password || !name) {
-    throw new Error('Faltan datos');
+    throw new Error('Missing data.');
   }
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
-    throw new Error('El usuario ya existe');
+    throw new Error('User already exists.');
   }
   const newUser = await User.create({
     email,
@@ -22,3 +22,5 @@ const registerHandler = async (
   return newUser;
 };
 
+
+export default registerHandler;
