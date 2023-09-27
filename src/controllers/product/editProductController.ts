@@ -16,7 +16,7 @@ const editProductController = async (
     const product = await editProductHandler(id, name, type);
     res.status(200).json(product);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 

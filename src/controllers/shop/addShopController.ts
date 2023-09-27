@@ -18,7 +18,7 @@ const addShopController = async (
     const product = await addShopHandler(email, products);
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
