@@ -2,41 +2,39 @@ import {
   Model,
   Table,
   Column,
-  Validate,
+  AutoIncrement,
   IsEmail,
-  Length,
-  ForeignKey
+  ForeignKey,
+  PrimaryKey,
+  BelongsTo
 } from "sequelize-typescript";
 import User from "./User";
 import Preset from "./Preset";
+import Review from "./reviews";
 
 @Table
 class UserPreset extends Model<UserPreset> {
+  
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id!: number;
+
+  @ForeignKey(() => User)
   @IsEmail
   @Column
   userEmail!: string;
 
-  @Column
-  userPresetId!: number;
-
-  @Validate({
-    min: 1,
-    max: 5,
-  })
-  @Column
-  rating!: number;
-
-  @Length({ min: 4, max: 200 })
-  @Column
-  ratingMessage!: string;
-
-  @ForeignKey(() => User)
-  @Column
-  userId!: number;
-
   @ForeignKey(() => Preset)
   @Column
   presetId!: number;
+
+  @BelongsTo(() => Review)
+  reviews?:Review;
+
+  @ForeignKey(() => Review)
+  @Column
+  reviewId?: number;
 }
 
 export default UserPreset;
