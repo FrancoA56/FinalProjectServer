@@ -5,6 +5,7 @@ import {
   IsEmail,
   BelongsTo,
   HasMany,
+  ForeignKey,
 } from "sequelize-typescript";
 import User from "./User";
 import ShoppingListItem from "./ShoppingListItem";
@@ -13,6 +14,7 @@ import ShoppingListItem from "./ShoppingListItem";
 class ShoppingList extends Model<ShoppingList> {
   @IsEmail
   @Column
+  @ForeignKey(() => User)
   userEmail!: string;
 
   @BelongsTo(() => User)
