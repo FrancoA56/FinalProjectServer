@@ -28,14 +28,17 @@ class Admin extends Model<Admin> {
 
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
-
+  
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
-
+  
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
 }
 

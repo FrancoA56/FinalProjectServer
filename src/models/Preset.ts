@@ -52,14 +52,17 @@ class Preset extends Model<Preset> {
 
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
-
+  
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
-
+  
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
 
   @HasMany(() => ShoppingListItem)
