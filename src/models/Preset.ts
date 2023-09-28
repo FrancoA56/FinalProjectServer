@@ -11,7 +11,7 @@ import {
   AutoIncrement,
   BelongsToMany,
   HasMany,
-  DataType
+  DataType,
 } from "sequelize-typescript";
 import User from "./User";
 import UserPreset from "./UserPreset";
@@ -24,7 +24,14 @@ enum PresetTypes {
   CARD = "card",
 }
 
+enum PresetCategories {
+  BASIC = "basic",
+  MEDIUM = "medium",
+  PREMIUM = "premium",
+}
+
 const presetTypes = Object.values(PresetTypes);
+const presetCategories = Object.values(PresetCategories);
 
 @Table
 class Preset extends Model<Preset> {
@@ -40,10 +47,18 @@ class Preset extends Model<Preset> {
   @Column
   price!: number;
 
+  @Column
+  defaultColor!: string;
+
   @Column({
-     type: DataType.ENUM(...presetTypes),
+    type: DataType.ENUM(...presetTypes),
   })
   type!: PresetTypes;
+
+  @Column({
+    type: DataType.ENUM(...presetCategories),
+  })
+  category!: PresetCategories;
 
   @Column
   isDisabled!: boolean;
