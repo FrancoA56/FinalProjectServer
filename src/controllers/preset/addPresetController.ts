@@ -1,18 +1,34 @@
 import { Request, Response } from "express";
-import addPresetHandler from "../../handlers/preset/addPresetHandler"
+import addPresetHandler from "../../handlers/preset/addPresetHandler";
 
 const addPresetController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    interface Preset {
-      id?: number;
-      name?: string;
-      type?: string;
+    enum PresetTypes {
+      ABOUT = "about",
+      HOME = "home",
+      FORM = "form",
+      CARD = "card",
     }
-    const { id, name, type }: Preset = req.body;
-    const preset = await addPresetHandler(id, name, type);
+    enum PresetCategories {
+      BASIC = "basic",
+      MEDIUM = "medium",
+      PREMIUM = "premium",
+    }
+
+    interface Preset {
+      name?: string;
+      price?: number;
+      defaultColor?: string;
+      type?: PresetTypes;
+      category?: PresetCategories;
+    }
+
+    const { name, price, defaultColor, type, category }: Preset = req.body;
+
+    const preset = await addPresetHandler(name, price, defaultColor, type, category);
     res.status(201).json(preset);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
