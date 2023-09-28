@@ -10,7 +10,7 @@ const loginHandler = async (
 
   const user = await User.findOne({where: email})
 
-  if(!user) throw new Error ("User doesn't exists...")
+  if(!user) throw new Error ("User doesn't exist.")
 
   const isCorrect = await bcrypt.compare(password, user.password);
 
