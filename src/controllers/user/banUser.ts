@@ -13,7 +13,7 @@ const banUser = async (
     const bannedUser = await banUserHandler(email);
     res.status(200).json(bannedUser);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
