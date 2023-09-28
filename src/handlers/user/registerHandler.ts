@@ -12,7 +12,7 @@ const registerHandler = async (
   }
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
-    throw new Error('User already exists.');
+    throw new Error('User already exist.');
   }
 
   const SALT_ROUNDS:number = 10;
