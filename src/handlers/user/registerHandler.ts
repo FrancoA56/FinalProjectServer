@@ -1,4 +1,5 @@
 const { User } = require('../../db');
+const bcrypt = require ('bcrypt')
 
 const registerHandler = async (
   email: string | undefined,
@@ -13,6 +14,13 @@ const registerHandler = async (
   if (existingUser) {
     throw new Error('User already exists.');
   }
+
+  const SALT_ROUNDS:number = 10;
+
+  const hashedPass = await bcrypt.hash(password,SALT_ROUNDS)
+  
+  password = hashedPass;
+
   const newUser = await User.create({
     email,
     password,
