@@ -9,5 +9,20 @@ const sequelize = new Sequelize({
   models: [__dirname + "/models"],
   logging: false
 });
-const { User, Admin, Preset } = sequelize.models;
-export { sequelize, User, Admin, Preset };
+const {
+  User,
+  Admin,
+  Preset,
+  ShoppingList,
+  shoppingListItems,
+  reviews } = sequelize.models;
+  
+export {
+  sequelize,
+  User,
+  Admin,
+  Preset,
+  ShoppingList,
+  shoppingListItems,
+  reviews
+};
