@@ -30,10 +30,6 @@ class Review extends Model<Review> {
     @Column
     ratingMessage!: string;
 
-    @ForeignKey(() => UserPreset)
-    @Column
-    userPresetId!: number;
-
     @HasOne(() => UserPreset)
     userPreset!: UserPreset;
 }
