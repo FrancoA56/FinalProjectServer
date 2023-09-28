@@ -7,6 +7,7 @@ const sequelize = new Sequelize({
   username: config.dbUser,
   storage: ":memory:",
   models: [__dirname + "/models"],
+  logging: false
 });
 const { User, Admin, Preset } = sequelize.models;
 export { sequelize, User, Admin, Preset };
