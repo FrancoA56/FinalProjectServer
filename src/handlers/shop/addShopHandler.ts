@@ -1,11 +1,14 @@
 interface Product {
   id?: number;
-  quantity?: number;
+  price?: number;
 }
 
 const addShopHandler = (
   email: string | undefined,
-  products: Product[] | undefined
-) => {};
+  products: Product[] | undefined,
+  totalAmount: number | undefined
+) => {
+
+ };
 
 export default addShopHandler;
