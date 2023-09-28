@@ -41,7 +41,7 @@ class Preset extends Model<Preset> {
   price!: number;
 
   @Column({
-    type: DataType.ENUM(...presetTypes),
+     type: DataType.ENUM(...presetTypes),
   })
   type!: PresetTypes;
 
