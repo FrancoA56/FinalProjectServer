@@ -5,7 +5,7 @@ import {
   Validate,
   IsEmail,
   Length,
-  BelongsToMany,
+  ForeignKey
 } from "sequelize-typescript";
 import User from "./User";
 import Preset from "./Preset";
@@ -17,7 +17,7 @@ class UserPreset extends Model<UserPreset> {
   userEmail!: string;
 
   @Column
-  presetId!: number;
+  userPresetId!: number;
 
   @Validate({
     min: 1,
@@ -30,11 +30,13 @@ class UserPreset extends Model<UserPreset> {
   @Column
   ratingMessage!: string;
 
-  @BelongsToMany(() => User, () => UserPreset)
-  user!: User;
+  @ForeignKey(() => User)
+  @Column
+  userId!: number;
 
-  @BelongsToMany(() => Preset, () => UserPreset)
-  preset!: Preset;
+  @ForeignKey(() => Preset)
+  @Column
+  presetId!: number;
 }
 
 export default UserPreset;

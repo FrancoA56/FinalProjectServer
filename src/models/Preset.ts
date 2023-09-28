@@ -11,6 +11,7 @@ import {
   AutoIncrement,
   BelongsToMany,
   HasMany,
+  DataType
 } from "sequelize-typescript";
 import User from "./User";
 import UserPreset from "./UserPreset";
@@ -22,6 +23,8 @@ enum PresetTypes {
   FORM = "form",
   CARD = "card",
 }
+
+const presetTypes = Object.values(PresetTypes);
 
 @Table
 class Preset extends Model<Preset> {
@@ -38,8 +41,7 @@ class Preset extends Model<Preset> {
   price!: number;
 
   @Column({
-    type: "ENUM",
-    values: Object.values(PresetTypes),
+    type: DataType.ENUM(...presetTypes),
   })
   type!: PresetTypes;
 
@@ -52,14 +54,17 @@ class Preset extends Model<Preset> {
 
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
 
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
 
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
 
   @HasMany(() => ShoppingListItem)
