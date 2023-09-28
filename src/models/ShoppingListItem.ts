@@ -6,7 +6,7 @@ import ShoppingList from "./ShoppingList";
 class ShoppingListItem extends Model<ShoppingListItem> {
 
   @Column
-  quantity!: number;
+  price!: number;
 
   @BelongsTo(() => Preset)
   preset!: Preset;
