@@ -36,6 +36,9 @@ class User extends Model<User> {
   @Column
   logo!: string;
 
+  @Column
+  isDisabled!:boolean;
+
   @IsDate
   @CreatedAt
   @Column

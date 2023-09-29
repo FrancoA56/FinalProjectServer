@@ -18,6 +18,7 @@ const {
   reviews,
   UserPreset,
 } = sequelize.models;
+
 export {
   sequelize,
   User,
