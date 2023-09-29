@@ -21,11 +21,6 @@ class ShoppingList extends Model<ShoppingList> {
   @Column
   id!: number;
 
-  @IsEmail
-  @Column
-  @ForeignKey(() => User)
-  userEmail!: string;
-
   @Column
   totalAmount!: number;
 
@@ -37,9 +32,10 @@ class ShoppingList extends Model<ShoppingList> {
   @BelongsTo(() => User)
   user!: User;
 
-  @ForeignKey(() => User)
+  @IsEmail
   @Column
-  userId!: number;
+  @ForeignKey(() => User)
+  userEmail!: string;
 
   @HasMany(() => ShoppingListItem)
   items!: ShoppingListItem[];
