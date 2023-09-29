@@ -5,7 +5,7 @@ const banUserHandler = async (email: string | undefined) => {
 
   if (!user) throw new Error("User doesn't exist.");
 
-  if (user.dataValues.isDisabled) return "User is already banned";
+  if (user.dataValues.isDisabled) throw new Error ("User is already banned");
 
   user.dataValues.isDisabled = true;
 
