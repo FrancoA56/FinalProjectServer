@@ -7,7 +7,7 @@ const sequelize = new Sequelize({
   username: config.dbUser,
   storage: ":memory:",
   models: [__dirname + "/models"],
-  logging: false
+  logging: false,
 });
 const {
   User,
@@ -15,8 +15,10 @@ const {
   Preset,
   ShoppingList,
   shoppingListItems,
-  reviews } = sequelize.models;
-  
+  reviews,
+  UserPreset,
+} = sequelize.models;
+
 export {
   sequelize,
   User,
@@ -24,5 +26,6 @@ export {
   Preset,
   ShoppingList,
   shoppingListItems,
-  reviews
+  reviews,
+  UserPreset,
 };
