@@ -28,7 +28,13 @@ const addPresetController = async (
 
     const { name, price, defaultColor, type, category }: Preset = req.body;
 
-    const preset = await addPresetHandler(name, price, defaultColor, type, category);
+    const preset = await addPresetHandler({
+      name,
+      price,
+      defaultColor,
+      type,
+      category,
+    });
     res.status(201).json(preset);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });

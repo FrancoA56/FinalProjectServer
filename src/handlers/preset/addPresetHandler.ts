@@ -12,13 +12,24 @@ enum PresetCategories {
   PREMIUM = "premium",
 }
 
-const addPresetHandler = async (
-  name: string | undefined,
-  price: number | undefined,
-  defaultColor: string | undefined,
-  type: PresetTypes | undefined,
-  category: PresetCategories | undefined
-) => {
+interface Preset {
+  name?: string;
+  price?: number;
+  defaultColor?: string;
+  type?: PresetTypes;
+  category?: PresetCategories;
+}
+
+const addPresetHandler = async ({
+  name,
+  price = 1,
+  defaultColor,
+  type = PresetTypes.CARD,
+  category = PresetCategories.BASIC,
+}: Preset) => {
+  if (!name || !price || !defaultColor || !type || !category)
+    throw new Error("Missing data to create a Preset");
+
   const newPreset = await Preset.create({
     name,
     price,
