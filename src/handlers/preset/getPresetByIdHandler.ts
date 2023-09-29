@@ -15,10 +15,13 @@ interface PresetInfo {
   reviews: Review[];
   ratingAverage: number;
   purchased: number;
+  isDisabled: boolean;
   release: Date;
 }
 
-const getPresetByIdHandler = async (id: number | undefined): Promise<PresetInfo> => {
+const getPresetByIdHandler = async (
+  id: number | undefined
+): Promise<PresetInfo> => {
   if (!id) throw new Error("Missing id");
 
   const { dataValues: data } = await Preset.findOne({ where: { id } });
@@ -32,7 +35,7 @@ const getPresetByIdHandler = async (id: number | undefined): Promise<PresetInfo>
       rating: review.dataValues.rating,
     };
   });
-  
+
   const totalRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
   const ratingAverage = reviews.length > 0 ? totalRatings / reviews.length : 0;
 
@@ -45,7 +48,8 @@ const getPresetByIdHandler = async (id: number | undefined): Promise<PresetInfo>
     category: data.category,
     reviews,
     ratingAverage,
-    purchased: data.users?.length,
+    purchased: data.users ? data.users.length : 0,
+    isDisabled: data.isDisabled,
     release: data.createdAt,
   };
 
