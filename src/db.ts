@@ -9,5 +9,22 @@ const sequelize = new Sequelize({
   models: [__dirname + "/models"],
   logging: false,
 });
-const { User, Admin, Preset, UserPreset } = sequelize.models;
-export { sequelize, User, Admin, Preset, UserPreset };
+const {
+  User,
+  Admin,
+  Preset,
+  ShoppingList,
+  shoppingListItems,
+  reviews,
+  UserPreset,
+} = sequelize.models;
+export {
+  sequelize,
+  User,
+  Admin,
+  Preset,
+  ShoppingList,
+  shoppingListItems,
+  reviews,
+  UserPreset,
+};
