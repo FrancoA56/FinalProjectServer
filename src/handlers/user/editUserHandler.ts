@@ -21,6 +21,7 @@ const editUserHandler = async (
   if (name) user.dataValues.name = name;
   if (logo) user.dataValues.logo = logo;
 
+  await user.save();
   return user;
 };
 
