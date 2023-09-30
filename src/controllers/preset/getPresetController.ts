@@ -14,18 +14,6 @@ enum OrderPriority {
   DESC = "d",
 }
 
-enum PresetTypes {
-  ABOUT = "about",
-  HOME = "home",
-  FORM = "form",
-  CARD = "card",
-}
-enum PresetCategories {
-  BASIC = "basic",
-  MEDIUM = "medium",
-  PREMIUM = "premium",
-}
-
 interface Preset {
   page?: number;
   quantity?: number;
