@@ -24,7 +24,7 @@ class User extends Model<User> {
   @Column
   email!: string;
 
-  @Length({ min: 8, max: 30 })
+  @Length({ min: 8 })
   @Column
   password!: string;
 
@@ -34,7 +34,7 @@ class User extends Model<User> {
 
   @IsUrl
   @Column
-  logo!: string;
+  logo!: string|null;
 
   @Column
   isDisabled!:boolean;

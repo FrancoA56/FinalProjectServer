@@ -1,4 +1,4 @@
-import { User } from "../../db";
+const { User } = require("../../db");
 const bcrypt = require("bcrypt");
 
 const editUserHandler = async (
@@ -7,22 +7,22 @@ const editUserHandler = async (
   name: string | undefined,
   logo: string | undefined
 ) => {
-  const user = await User.findOne({ where: { email } });
-  const SALT_ROUNDS: number = 10;
-
-  if (!user) throw new Error("User doesn't exist.");
-
+  let hashedPass;
   if (password) {
-    const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
-
-    user.dataValues.password = hashedPass;
+    const SALT_ROUNDS: number = 10;
+    hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
   }
 
-  if (name) user.dataValues.name = name;
-  if (logo) user.dataValues.logo = logo;
+  await User.update(
+    {
+      password: hashedPass,
+      name: name,
+      logo: logo,
+    },
+    { where: { email } }
+  );
 
-  await user.save();
-  return user;
+  return await User.findOne({ where: { email } });
 };
 
 export default editUserHandler;

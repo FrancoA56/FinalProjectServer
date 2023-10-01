@@ -1,4 +1,4 @@
-import { User } from "../../db";
+const { User } = require("../../db");
 
 const getUserHandler = (email: string | undefined) => {
   const user = User.findOne({ where: { email } });
