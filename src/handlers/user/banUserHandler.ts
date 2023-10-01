@@ -1,4 +1,4 @@
-import { User } from ("../../db");
+import { User } from "../../db";
 
 const banUserHandler = async (email: string | undefined) => {
   const user = await User.findOne({ where: { email } });
