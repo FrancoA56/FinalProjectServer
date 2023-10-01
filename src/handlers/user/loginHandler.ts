@@ -1,5 +1,5 @@
-const { User } = require("../../db");
-const bcrypt = require("bcrypt");
+import { User } from "../../db";
+import bcrypt from "bcrypt";
 
 const loginHandler = async (
   email: string | undefined,
