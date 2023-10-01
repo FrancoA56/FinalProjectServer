@@ -34,7 +34,7 @@ class User extends Model<User> {
 
   @IsUrl
   @Column
-  logo!: string|null;
+  logo!: string;
 
   @Column
   isDisabled!:boolean;
