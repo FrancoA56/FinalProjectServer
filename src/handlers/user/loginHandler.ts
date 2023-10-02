@@ -11,7 +11,7 @@ const loginHandler = async (
 
   if (!user) throw new Error("User doesn't exist.");
 
-  const isCorrect = await bcrypt.compare(password, user.password);
+  const isCorrect = await bcrypt.compare(password, user.dataValues.password);
 
   if (isCorrect) return user;
   else throw new Error("The password is incorrect.");
