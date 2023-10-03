@@ -1,4 +1,4 @@
-import { User } from "../../db"; 
+import { User } from "../../db";
 import bcrypt from "bcrypt";
 
 const registerHandler = async (
@@ -26,7 +26,12 @@ const registerHandler = async (
     name,
     logo,
   });
-  return newUser;
+
+  return {
+    email,
+    name,
+    logo,
+  };
 };
 
 export default registerHandler;

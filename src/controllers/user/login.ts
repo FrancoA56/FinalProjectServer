@@ -7,8 +7,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       email?: string;
       password?: string;
     }
+
     const { email, password }: User = req.query;
-    const user = await loginHandler(email, password);
+    const loweredEmail = email.toLowerCase();
+    const user = await loginHandler(loweredEmail, password);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
