@@ -22,7 +22,13 @@ const editUserHandler = async (
     { where: { email } }
   );
 
-  return await User.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email } });
+
+  return {
+    email,
+    name: user.dataValues.name,
+    logo: user.dataValues.logo,
+  };
 };
 
 export default editUserHandler;

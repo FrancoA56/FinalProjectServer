@@ -7,7 +7,8 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
       email?: string;
     }
     const { email }: User = req.params;
-    const user = await getUserHandler(email);
+    const loweredEmail = email.toLowerCase();
+    const user = await getUserHandler(loweredEmail);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
