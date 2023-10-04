@@ -30,7 +30,7 @@ const {
   Admin,
   Preset,
   Invoice,
-  InvoiceDetail,
+  InvoiceItem,
   Review,
   UserPreset,
 } = sequelize.models;
@@ -41,7 +41,7 @@ export {
   Admin,
   Preset,
   Invoice,
-  InvoiceDetail,
+  InvoiceItem,
   Review,
   UserPreset,
 };
