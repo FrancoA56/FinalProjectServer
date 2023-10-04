@@ -26,6 +26,9 @@ class Admin extends Model<Admin> {
   @Column
   name!: string;
 
+  @Column
+  isDisabled!:boolean;
+
   @IsDate
   @CreatedAt
   @Column
@@ -40,6 +43,7 @@ class Admin extends Model<Admin> {
   @DeletedAt
   @Column
   deletedAt?: Date;
+
 }
 
 export default Admin;
