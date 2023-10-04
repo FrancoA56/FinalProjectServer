@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize-typescript";
 import config from "./utils/config";
 
 let sequelize: Sequelize;
-if (config.dev) {//LOCAL CONNECTION
+if (config.dev) {
     sequelize = new Sequelize({
     dialect: "postgres",
     database: config.dbName,
@@ -12,10 +12,10 @@ if (config.dev) {//LOCAL CONNECTION
     models: [__dirname + "/models"],
     logging: false,
   });
-} else {//RENDER CONNECTION
+} else {
     sequelize = new Sequelize(config.dbDeploy, {
-    logging: false, // set to console.log to see the raw SQL queries
-    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+    logging: false,
+    native: false, 
     dialectOptions: {
       ssl: {
         require: true,
