@@ -12,6 +12,7 @@ const config = {
  port: process.env.API_PORT,
  host: process.env.API_HOST,
  cors: process.env.CORS,
+ dbDeploy: process.env.DB_DEPLOY,
 };
 
 export default config;
