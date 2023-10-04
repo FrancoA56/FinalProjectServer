@@ -1,8 +1,8 @@
 import { Invoice } from "../../../db";
-import addInvoiceDetail from "./addInvoiceDetailHandler";
+import addInvoiceItem from "./addInvoiceItemHandler";
 import ERROR_CODES, { IResponse } from "./errorHandler";
 
-const moduleName = 'addShopHandler';
+const moduleName = 'addInvoiceHandler';
 
 interface Product {
   id?: number;
@@ -27,7 +27,7 @@ const addInvoiceHandler = async (
       isPayed:true
     });
 
-    const addItems = await addInvoiceDetail(products, invoice.dataValues.id);
+    const addItems = await addInvoiceItem(products, invoice.dataValues.id);
     if (!addItems.isSuccess) return addItems;
  
     return { isSuccess: true };
