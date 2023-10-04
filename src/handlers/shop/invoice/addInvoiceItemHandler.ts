@@ -1,7 +1,7 @@
-import { InvoiceDetail } from "../../../db";
+import { InvoiceItem } from "../../../db";
 import ERROR_CODES, { IResponse } from "./errorHandler";
 
-const moduleName = 'addShopItemHandler';
+const moduleName = 'addInvoiceItemHandler';
 
 interface Product {
     id?: number;
@@ -19,9 +19,9 @@ const addInvoiceItem = async (
             shoppingListId: idOrder
         }));
 
-        const invoiceDetail = await InvoiceDetail.bulkCreate(newParamProducts);
+        const invoiceItem = await InvoiceItem.bulkCreate(newParamProducts);
 
-        if (!invoiceDetail) return { ...ERROR_CODES.DATABASE_ERROR, modulo: moduleName }
+        if (!invoiceItem) return { ...ERROR_CODES.DATABASE_ERROR, modulo: moduleName }
 
         return { isSuccess: true }
 
