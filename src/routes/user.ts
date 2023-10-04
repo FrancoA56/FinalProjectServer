@@ -7,10 +7,10 @@ import banUser from "../controllers/user/banUser";
 
 const userRouter = Router();
 
-userRouter.get("/:mail", getUser);
+userRouter.get("/:email", getUser);
 userRouter.get("/", login); //query
 userRouter.post("/register", register);
-userRouter.put("/", editUser);
-userRouter.delete("/:mail", banUser);
+userRouter.put("/:email", editUser);
+userRouter.delete("/:email", banUser);
 
 export default userRouter;

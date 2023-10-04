@@ -10,7 +10,8 @@ const register = async (req: Request, res: Response): Promise<void> => {
       logo?: string;
     }
     const { email, password, name, logo }: User = req.body;
-    const user = await registerHandler(email, password, name, logo);
+    const loweredEmail = email.toLowerCase();
+    const user = await registerHandler(loweredEmail, password, name, logo);
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
