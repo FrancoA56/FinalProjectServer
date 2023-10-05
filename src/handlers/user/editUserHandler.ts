@@ -5,7 +5,8 @@ const editUserHandler = async (
   email: string | undefined,
   password: string | undefined,
   name: string | undefined,
-  logo: string | undefined
+  logo: string | undefined,
+  about: string | undefined,
 ) => {
   let hashedPass;
   if (password) {
@@ -16,8 +17,9 @@ const editUserHandler = async (
   await User.update(
     {
       password: hashedPass,
-      name: name,
-      logo: logo,
+      name,
+      logo,
+      about
     },
     { where: { email } }
   );
@@ -28,6 +30,7 @@ const editUserHandler = async (
     email,
     name: user.dataValues.name,
     logo: user.dataValues.logo,
+    about: user.dataValues.about
   };
 };
 

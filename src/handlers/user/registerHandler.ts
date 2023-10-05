@@ -4,8 +4,7 @@ import bcrypt from "bcrypt";
 const registerHandler = async (
   email: string | undefined,
   password: string | undefined,
-  name: string | undefined,
-  logo: string | undefined
+  name: string | undefined
 ) => {
   if (!email || !password || !name) {
     throw new Error("Missing data.");
@@ -23,14 +22,12 @@ const registerHandler = async (
   const newUser = await User.create({
     email,
     password,
-    name,
-    logo,
+    name
   });
 
   return {
     email,
     name,
-    logo,
   };
 };
 

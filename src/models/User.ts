@@ -18,6 +18,7 @@ import Invoice from "./Invoice";
 import Order from "./Order";
 import Review from "./Review";
 
+
 @Table
 class User extends Model<User> {
   @IsEmail
@@ -36,6 +37,9 @@ class User extends Model<User> {
   @IsUrl
   @Column
   logo!: string;
+
+  @Column
+  about!: string;
 
   @Column
   isDisabled!:boolean;

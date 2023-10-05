@@ -21,6 +21,7 @@ const loginHandler = async (
       email,
       name: user.dataValues.name,
       logo: user.dataValues.logo,
+      about: user.dataValues.about,
     };
   else throw new Error("The password is incorrect.");
 };
