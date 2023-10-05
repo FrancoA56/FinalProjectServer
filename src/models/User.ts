@@ -16,7 +16,7 @@ import {
 import Preset from "./Preset";
 import UserPreset from "./UserPreset";
 import ShoppingList from "./ShoppingList";
-import { Col } from "sequelize/types/utils";
+
 
 @Table
 class User extends Model<User> {
