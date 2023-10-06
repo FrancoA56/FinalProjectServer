@@ -19,7 +19,10 @@ const addOrderController = async (
 
     const response = await addOrderHandler(email, products);
 
-    if (!response.isSuccess) res.status(response.status).json(response.error);
+    if (!response.isSuccess) {
+      res.status(response.status).json({ isSuccess: false, error: response.error });
+      return;
+    }
 
     res.status(201).json({ isSuccess: true });
   } catch (error) {

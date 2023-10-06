@@ -1,5 +1,5 @@
 import { Order } from "../../../db";
-import findOrderByUser from "./findOrderByUser";
+import findOrderByEmail from "./getOrderByEmailHandler";
 import addOrderItem from "./addOrderItemHandler";
 import deleteOrderItem from "./deleteOrderHandler";
 import ERROR_CODES from "../errorHandler";
@@ -22,7 +22,7 @@ const addOrderHandler = async (
     }
     try {
 
-        const findResponse = await findOrderByUser(email);
+        const findResponse = await findOrderByEmail(email);
 
         if (!findResponse.isSuccess) {
             const order = await Order.create({ userEmail: email });
