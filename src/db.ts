@@ -37,7 +37,5 @@ export {
   InvoiceItem,
   Order,
   OrderItem,
-  Review,
-  Order,
-  OrderItem,
+  Review
 };
