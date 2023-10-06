@@ -1,4 +1,4 @@
-import { Preset, UserPreset } from "../../db";
+import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 
 interface Review {
   message: string;
@@ -27,9 +27,10 @@ const getPresetByIdHandler = async (
   const { dataValues: data } = await Preset.findOne({ where: { id } });
   if (!data) throw new Error("Preset not found with the specified id");
 
-  const userPresets = await UserPreset.findAll({ where: { id } });
-  const reviews: Review[] = userPresets.map((userPreset) => {
-    const review = userPreset.dataValues.reviews;
+  const reviewModels = await Review.findAll({
+    where: { presetId: id },
+  });
+  const reviews = reviewModels.map((review) => {
     return {
       message: review.dataValues.ratingMessage,
       rating: review.dataValues.rating,
@@ -37,7 +38,22 @@ const getPresetByIdHandler = async (
   });
 
   const totalRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
-  const ratingAverage = reviews.length > 0 ? totalRatings / reviews.length : 0;
+  const ratingAverage =
+    reviewModels.length > 0 ? totalRatings / reviewModels.length : 0;
+
+  const purchased = await InvoiceItem.count({
+    distinct: true,
+    col: "Invoice.userEmail",
+    where: { presetId: id },
+    include: [
+      {
+        model: Invoice,
+        where: {
+          isPaid: true,
+        },
+      },
+    ],
+  });
 
   const preset: PresetInfo = {
     id: data.id,
@@ -48,7 +64,7 @@ const getPresetByIdHandler = async (
     category: data.category,
     reviews,
     ratingAverage,
-    purchased: data.users ? data.users.length : 0,
+    purchased,
     isDisabled: data.isDisabled,
     release: data.createdAt,
   };
