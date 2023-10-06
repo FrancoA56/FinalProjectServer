@@ -4,12 +4,5 @@ const ERROR_CODES = {
     CATCH_ERROR: { isSuccess: false, status: 500 },
 };
 
-export interface IResponse {
-    isSuccess: boolean;
-    status?: number;
-    error?: string;
-    modulo?: string
-}
-
 export default ERROR_CODES;
   

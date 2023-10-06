@@ -31,6 +31,8 @@ const {
   Preset,
   Invoice,
   InvoiceItem,
+  Order,
+  OrderItem,
   Review,
   UserPreset,
 } = sequelize.models;
@@ -42,6 +44,8 @@ export {
   Preset,
   Invoice,
   InvoiceItem,
+  Order,
+  OrderItem,
   Review,
   UserPreset,
 };

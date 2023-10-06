@@ -1,30 +1,30 @@
-import { InvoiceItem } from "../../../db";
+import { OrderItem } from "../../../db";
 import ERROR_CODES from "../errorHandler";
 import IResponse from "../interfaceResponse";
 
 const moduleName = 'addInvoiceItemHandler';
 
-interface Product {
+interface IProduct {
     id?: number;
-    price?: number;
 }
 
 const addInvoiceItem = async (
-    products: Product[],
-    idInvoice: number
+    idOrder: number,
+    products: IProduct[]
+    
 ): Promise<IResponse> => {
     try {
+
         const newParamProducts = products.map(p => ({
-            presetId: p.id,
-            price: p.price,
-            invoiceId: idInvoice
+            presetId: p,
+            orderId: idOrder
         }));
 
-        const invoiceItem = await InvoiceItem.bulkCreate(newParamProducts);
+        const orderItem  = await OrderItem.bulkCreate(newParamProducts);
 
-        if (!invoiceItem) return { ...ERROR_CODES.DATABASE_ERROR, modulo: moduleName }
+        if (!orderItem) return { ...ERROR_CODES.DATABASE_ERROR, modulo: moduleName }
 
-        return { isSuccess: true }
+        return { isSuccess: true, data: orderItem }
 
     } catch (error) {
 
