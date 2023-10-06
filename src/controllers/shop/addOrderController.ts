@@ -1,25 +1,22 @@
 import { Request, Response } from "express";
-import addInvoiceHandler from "../../handlers/shop/invoice/addInvoiceHandler";
+import addOrderHandler from "../../handlers/shop/order/addOrderHandler";
 
-const addInvoiceController = async (
+const addOrderController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     interface Param {
       email?: string;
-      totalAmount?: number;
+      products?:Product[]
     }
 
     interface Product {
       id?: number;
-      price?: number;
     }
-    const { products }: { products: Product[] } = req.body;
-    
-    const { email, totalAmount }: Param = req.body;
+    const { email, products }: Param = req.body;
 
-    const response = await addInvoiceHandler(email, products, totalAmount);
+    const response = await addOrderHandler(email, products);
 
     if (!response.isSuccess) {
       res.status(response.status).json({ isSuccess: false, error: response.error });
@@ -32,4 +29,4 @@ const addInvoiceController = async (
   }
 };
 
-export default addInvoiceController;
+export default addOrderController;

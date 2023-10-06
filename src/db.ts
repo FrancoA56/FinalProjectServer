@@ -35,6 +35,8 @@ export {
   Preset,
   Invoice,
   InvoiceItem,
+  Order,
+  OrderItem,
   Review,
   Order,
   OrderItem,

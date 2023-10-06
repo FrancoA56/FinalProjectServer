@@ -1,6 +1,8 @@
 import { Invoice } from "../../../db";
 import addInvoiceItem from "./addInvoiceItemHandler";
-import ERROR_CODES, { IResponse } from "./errorHandler";
+import deleteOrder from "../order/deleteOrderHandler";
+import ERROR_CODES from "../errorHandler";
+import IResponse from "../interfaceResponse";
 
 const moduleName = 'addInvoiceHandler';
 
@@ -23,13 +25,15 @@ const addInvoiceHandler = async (
     const invoice = await Invoice.create({
       userEmail: email,
       totalAmount,
-      paymentMethod:"mercado_pago",
-      isPayed:true
+      paymentMethod: "mercado_pago",
+      isPayed: true
     });
 
     const addItems = await addInvoiceItem(products, invoice.dataValues.id);
     if (!addItems.isSuccess) return addItems;
- 
+
+    await deleteOrder(email, 0, false);
+
     return { isSuccess: true };
 
   } catch (error) {
