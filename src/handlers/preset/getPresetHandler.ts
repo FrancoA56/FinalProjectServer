@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-import { Preset, UserPreset } from "../../db";
+import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 
 enum PresetTypes {
   ABOUT = "about",
@@ -24,11 +24,6 @@ enum OrderType {
 enum OrderPriority {
   ASC = "a",
   DESC = "d",
-}
-
-interface Review {
-  message?: string;
-  rating?: number;
 }
 
 interface Filter {
@@ -56,17 +51,15 @@ const getPresetHandler = async ({
   const filteredPresets = await Preset.findAll({ where: { ...parsedFilters } });
 
   const getReviews = async (preset: Model) => {
-    const userPresets = await UserPreset.findAll({
+    const reviews = await Review.findAll({
       where: { presetId: preset.dataValues.id },
     });
-    const reviews: Review[] = userPresets.map((userPreset) => {
-      const reviews = userPreset.dataValues.reviews;
+    return reviews.map((review) => {
       return {
-        message: reviews.dataValues.message,
-        rating: reviews.dataValues.rating,
+        message: review.dataValues.ratingMessage,
+        rating: review.dataValues.rating,
       };
     });
-    return reviews;
   };
 
   const calculateAverageRatings = async (presets: Model[]) => {
@@ -88,6 +81,33 @@ const getPresetHandler = async ({
   };
   const averageRatings = await calculateAverageRatings(filteredPresets);
 
+  const getSells = async (presets: Model[]) => {
+    const sells: Record<number, number> = {};
+
+    await Promise.all(
+      presets.map(async (preset) => {
+        const presetId = preset.dataValues.id;
+        const totalSells = await InvoiceItem.count({
+          distinct: true,
+          col: "Invoice.userEmail",
+          where: { presetId },
+          include: [
+            {
+              model: Invoice,
+              where: {
+                isPaid: true,
+              },
+            },
+          ],
+        });
+        sells[presetId] = totalSells;
+      })
+    );
+
+    return sells;
+  };
+  const sells = await getSells(filteredPresets);
+
   const sortingFunction = (a: Model, b: Model) => {
     const sortOrder = orderPriority === OrderPriority.ASC ? 1 : -1;
 
@@ -97,8 +117,8 @@ const getPresetHandler = async ({
       case OrderType.PRICE:
         return sortOrder * (a.dataValues.price - b.dataValues.price);
       case OrderType.PURCHASED:
-        const purchasedA = a.dataValues.users ? a.dataValues.users.length : 0;
-        const purchasedB = b.dataValues.users ? b.dataValues.users.length : 0;
+        const purchasedA = sells[a.dataValues.id];
+        const purchasedB = sells[b.dataValues.id];
         return sortOrder * (purchasedA - purchasedB);
       case OrderType.RELEASE:
         const dateA = new Date(a.dataValues.createdAt).getTime();
@@ -119,6 +139,7 @@ const getPresetHandler = async ({
       const { dataValues: data } = preset;
       const reviews = await getReviews(preset);
       const ratingAverage = await calculateAverageRatings([preset]);
+      const purchased = await getSells([preset]);
 
       return {
         id: data.id,
@@ -129,7 +150,7 @@ const getPresetHandler = async ({
         category: data.category,
         reviews,
         ratingAverage: ratingAverage[data.id],
-        purchased: data.users ? data.users.length : 0,
+        purchased,
         isDisabled: data.isDisabled,
         release: data.createdAt,
       };

@@ -38,7 +38,7 @@ class Invoice extends Model<Invoice> {
   paymentMethod!: PaymentMethod;
 
   @Column
-  isPayed!:boolean;
+  isPaid!:boolean;
 
   @IsDate
   @CreatedAt

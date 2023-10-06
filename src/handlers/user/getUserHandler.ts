@@ -9,6 +9,7 @@ const getUserHandler = async (email: string | undefined) => {
     email,
     name: user.dataValues.name,
     logo: user.dataValues.logo,
+    about: user.dataValues.about
   };
 };
 

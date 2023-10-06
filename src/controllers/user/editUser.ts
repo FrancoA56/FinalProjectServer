@@ -8,11 +8,18 @@ const editUser = async (req: Request, res: Response): Promise<void> => {
       password?: string;
       name?: string;
       logo?: string;
+      about?: string;
     }
     const { email }: User = req.params;
     const loweredEmail = email.toLowerCase();
-    const { password, name, logo }: User = req.body;
-    const user = await editUserHandler(loweredEmail, password, name, logo);
+    const { password, name, logo, about }: User = req.body;
+    const user = await editUserHandler(
+      loweredEmail,
+      password,
+      name,
+      logo,
+      about
+    );
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
