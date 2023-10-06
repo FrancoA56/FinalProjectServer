@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import getReviewHandler from "../../handlers/review/getReviewHandler";
 
 interface Review {
+  id?: number;
   email?: string;
   presetId?: number;
 }
@@ -11,8 +12,9 @@ const getReviewController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { email, presetId }: Review = req.query;
+    const { id, email, presetId }: Review = req.query;
     const reviews = await getReviewHandler({
+      id,
       userEmail: email,
       presetId,
     });
