@@ -8,14 +8,13 @@ const addOrderController = async (
   try {
     interface Param {
       email?: string;
+      products?:Product[]
     }
 
     interface Product {
       id?: number;
     }
-    const { products }: { products: Product[] } = req.body;
-    
-    const { email }: Param = req.body;
+    const { email, products }: Param = req.body;
 
     const response = await addOrderHandler(email, products);
 

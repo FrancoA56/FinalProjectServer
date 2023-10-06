@@ -11,13 +11,13 @@ interface Product {
 
 const addInvoiceItem = async (
     products: Product[],
-    idInvoice: number
+    invoiceId: number
 ): Promise<IResponse> => {
     try {
         const newParamProducts = products.map(p => ({
             presetId: p.id,
             price: p.price,
-            invoiceId: idInvoice
+            invoiceId
         }));
 
         const invoiceItem = await InvoiceItem.bulkCreate(newParamProducts);

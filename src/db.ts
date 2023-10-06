@@ -34,7 +34,6 @@ const {
   Order,
   OrderItem,
   Review,
-  UserPreset,
 } = sequelize.models;
 
 export {
@@ -47,5 +46,4 @@ export {
   Order,
   OrderItem,
   Review,
-  UserPreset,
 };
