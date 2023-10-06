@@ -13,7 +13,7 @@ const getReviewController = async (
   try {
     const { email, presetId }: Review = req.query;
     const reviews = await getReviewHandler({
-      email,
+      userEmail: email,
       presetId,
     });
     res.status(200).json(reviews);
