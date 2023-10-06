@@ -26,11 +26,6 @@ enum OrderPriority {
   DESC = "d",
 }
 
-interface Review {
-  message?: string;
-  rating?: number;
-}
-
 interface Filter {
   type?: PresetTypes;
   category?: PresetCategories;
