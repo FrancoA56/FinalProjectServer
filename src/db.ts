@@ -3,7 +3,7 @@ import config from "./utils/config";
 
 let sequelize: Sequelize;
 if (config.dev) {
-    sequelize = new Sequelize({
+  sequelize = new Sequelize({
     dialect: "postgres",
     database: config.dbName,
     password: config.dbPassword,
@@ -13,9 +13,9 @@ if (config.dev) {
     logging: false,
   });
 } else {
-    sequelize = new Sequelize(config.dbDeploy, {
+  sequelize = new Sequelize(config.dbDeploy, {
     logging: false,
-    native: false, 
+    native: false,
     dialectOptions: {
       ssl: {
         require: true,
@@ -25,15 +25,8 @@ if (config.dev) {
   });
 }
 
-const {
-  User,
-  Admin,
-  Preset,
-  Invoice,
-  InvoiceItem,
-  Review,
-  UserPreset,
-} = sequelize.models;
+const { User, Admin, Preset, Invoice, InvoiceItem, Review, Order, OrderItem } =
+  sequelize.models;
 
 export {
   sequelize,
@@ -43,5 +36,6 @@ export {
   Invoice,
   InvoiceItem,
   Review,
-  UserPreset,
+  Order,
+  OrderItem,
 };
