@@ -1,5 +1,14 @@
 import { User } from "../../db";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "../../utils/config";
+
+interface UserInfo {
+  email: string;
+  name: string;
+  logo: string;
+  about: string;
+}
 
 const loginHandler = async (
   email: string | undefined,
@@ -12,18 +21,23 @@ const loginHandler = async (
   if (!user) throw new Error("User doesn't exist.");
 
   const ban = user.dataValues.isDisabled;
-  
-  if(ban) throw new Error ("User is banned.")
-  
+
+  if (ban) throw new Error("User is banned.");
+
   const isCorrect = await bcrypt.compare(password, user.dataValues.password);
-  if (isCorrect)
-    return {
+  
+  if (isCorrect) {
+    const userInfo: UserInfo = {
       email,
       name: user.dataValues.name,
       logo: user.dataValues.logo,
       about: user.dataValues.about,
     };
-  else throw new Error("The password is incorrect.");
+    const secretKey = config.secretKey;
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
+
+    return token;
+  } else throw new Error("The password is incorrect.");
 };
 
 export default loginHandler;
