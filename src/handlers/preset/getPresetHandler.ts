@@ -87,16 +87,14 @@ const getPresetHandler = async ({
     await Promise.all(
       presets.map(async (preset) => {
         const presetId = preset.dataValues.id;
-        const totalSells = await InvoiceItem.count({
+        const totalSells = await Invoice.count({
           distinct: true,
-          col: "Invoice.userEmail",
-          where: { presetId },
+          col: "userEmail",
+          where: { isPaid: true },
           include: [
             {
-              model: Invoice,
-              where: {
-                isPaid: true,
-              },
+              model: InvoiceItem,
+              where: { presetId },
             },
           ],
         });
@@ -150,7 +148,7 @@ const getPresetHandler = async ({
         category: data.category,
         reviews,
         ratingAverage: ratingAverage[data.id],
-        purchased,
+        purchased:purchased[data.id],
         isDisabled: data.isDisabled,
         release: data.createdAt,
       };

@@ -41,16 +41,14 @@ const getPresetByIdHandler = async (
   const ratingAverage =
     reviewModels.length > 0 ? totalRatings / reviewModels.length : 0;
 
-  const purchased = await InvoiceItem.count({
+  const purchased = await Invoice.count({
     distinct: true,
-    col: "Invoice.userEmail",
-    where: { presetId: id },
+    col: "userEmail",
+    where: { isPaid: true },
     include: [
       {
-        model: Invoice,
-        where: {
-          isPaid: true,
-        },
+        model: InvoiceItem,
+        where: { presetId: id },
       },
     ],
   });
