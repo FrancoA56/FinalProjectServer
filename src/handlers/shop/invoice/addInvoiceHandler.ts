@@ -26,7 +26,7 @@ const addInvoiceHandler = async (
       userEmail: email,
       totalAmount,
       paymentMethod: "mercado_pago",
-      isPayed: true
+      isPaid: true
     });
 
     const addItems = await addInvoiceItem(products, invoice.dataValues.id);
