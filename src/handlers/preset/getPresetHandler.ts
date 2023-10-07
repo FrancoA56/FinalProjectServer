@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-import { Invoice, InvoiceItem, Preset, Review, sequelize } from "../../db";
+import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 
 enum PresetTypes {
   ABOUT = "about",
