@@ -1,8 +1,12 @@
 import { Router } from "express";
-import addShopController from "../controllers/shop/addShopController";
+import addInvoiceController from "../controllers/shop/addInvoiceController";
+import addOrderController from "../controllers/shop/addOrderController";
+import getOrderByEmailController from "../controllers/shop/getOrderByEmailController";
 
 const shopRouter = Router();
 
-shopRouter.post("/", addShopController);
+shopRouter.post("/invoice", addInvoiceController);
+shopRouter.get("/order", getOrderByEmailController);
+shopRouter.post("/order", addOrderController);
 
 export default shopRouter;

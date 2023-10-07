@@ -7,9 +7,10 @@ import {
     PrimaryKey,
     AutoIncrement,
     ForeignKey,
-    HasOne
+    IsEmail
 } from "sequelize-typescript";
-import UserPreset from "./UserPreset";
+import User from "./User";
+import Preset from "./Preset";
 
 @Table
 class Review extends Model<Review> {
@@ -26,12 +27,18 @@ class Review extends Model<Review> {
     @Column
     rating!: number;
 
-    @Length({ min: 4, max: 200 })
+    @Length({ max: 200 })
     @Column
     ratingMessage!: string;
 
-    @HasOne(() => UserPreset)
-    userPreset!: UserPreset;
+    @ForeignKey(() => User)
+    @IsEmail
+    @Column
+    userEmail!: string;
+  
+    @ForeignKey(() => Preset)
+    @Column
+    presetId!: number;
 }
 
 export default Review;

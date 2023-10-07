@@ -10,12 +10,13 @@ import {
   Length,
   IsUrl,
   IsDate,
-  BelongsToMany,
   HasMany,
+  HasOne
 } from "sequelize-typescript";
-import Preset from "./Preset";
-import UserPreset from "./UserPreset";
-import ShoppingList from "./ShoppingList";
+
+import Invoice from "./Invoice";
+import Order from "./Order";
+import Review from "./Review";
 
 
 @Table
@@ -58,11 +59,14 @@ class User extends Model<User> {
   @Column
   deletedAt?: Date;
 
-  @HasMany(() => ShoppingList)
-  shoppingLists!: ShoppingList[];
+  @HasMany(() => Invoice)
+  invoices!: Invoice[];
 
-  @BelongsToMany(() => Preset, () => UserPreset)
-  presets!: Preset[];
+  @HasOne(() => Order)
+  order!: Order;
+
+  @HasMany(() => Review)
+  reviews!: Review[];
 }
 
 export default User;

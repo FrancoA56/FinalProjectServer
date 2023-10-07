@@ -13,6 +13,7 @@ const config = {
  host: process.env.API_HOST,
  cors: process.env.CORS,
  secretKey: process.env.SECRET_KEY,
+ dbDeploy: process.env.DB_DEPLOY,
 };
 
 export default config;

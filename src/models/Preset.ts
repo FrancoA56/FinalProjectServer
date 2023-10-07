@@ -9,13 +9,11 @@ import {
   Length,
   IsDate,
   AutoIncrement,
-  BelongsToMany,
   HasMany,
   DataType,
 } from "sequelize-typescript";
-import User from "./User";
-import UserPreset from "./UserPreset";
-import ShoppingListItem from "./ShoppingListItem";
+import InvoiceDetail from "./InvoiceItem";
+import OrderDetail from "./OrderItem";
 
 enum PresetTypes {
   ABOUT = "about",
@@ -82,11 +80,12 @@ class Preset extends Model<Preset> {
   @Column
   deletedAt?: Date;
 
-  @HasMany(() => ShoppingListItem)
-  shoppingListItems!: ShoppingListItem[];
+  @HasMany(() => InvoiceDetail)
+  invoiceDetails!: InvoiceDetail[];
 
-  @BelongsToMany(() => User, () => UserPreset)
-  users!: User[];
+  @HasMany(() => OrderDetail)
+  orderDetails!: OrderDetail[];
+
 }
 
 export default Preset;
