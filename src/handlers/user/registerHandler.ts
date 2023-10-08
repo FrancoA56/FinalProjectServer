@@ -1,7 +1,7 @@
 import { User } from "../../db";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import config from "../../utils/config";
+// import jwt from "jsonwebtoken";
+// import config from "../../utils/config";
 
 interface UserInfo {
   email: string;
@@ -36,10 +36,10 @@ const registerHandler = async (
     email: newUser.dataValues.email,
     name: newUser.dataValues.name,
   };
-  const secretKey = config.secretKey;
-  const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
+  // const secretKey = config.secretKey;
+  // const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
 
-  return token;
+  return userInfo;
 };
 
 export default registerHandler;
