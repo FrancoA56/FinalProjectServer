@@ -34,7 +34,7 @@ const loginHandler = async (
       about: user.dataValues.about,
     };
     const secretKey = config.secretKey;
-    const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: "3600" });
 
     return token;
   } else throw new Error("The password is incorrect.");
