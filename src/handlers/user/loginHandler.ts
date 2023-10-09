@@ -25,7 +25,7 @@ const loginHandler = async (
   if (ban) throw new Error("User is banned.");
 
   const isCorrect = await bcrypt.compare(password, user.dataValues.password);
-  
+
   if (isCorrect) {
     const userInfo: UserInfo = {
       email,
