@@ -25,7 +25,7 @@ const loginHandler = async (
   if (ban) throw new Error("User is banned.");
 
   const isCorrect = await bcrypt.compare(password, user.dataValues.password);
-  
+
   if (isCorrect) {
     const userInfo: UserInfo = {
       email,
@@ -34,7 +34,7 @@ const loginHandler = async (
       about: user.dataValues.about,
     };
     const secretKey = config.secretKey;
-    const token = jwt.sign(userInfo, secretKey, { expiresIn: "3600" });
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
 
     return token;
   } else throw new Error("The password is incorrect.");
