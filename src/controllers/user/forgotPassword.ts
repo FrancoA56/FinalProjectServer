@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import forgotPasswordHandler from "../../handlers/user/forgotPasswordHandler";
 
-const forgorPassword = async (req: Request, res: Response): Promise<void> => {
+const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   try {
     interface User {
       email?: string;
@@ -15,4 +15,4 @@ const forgorPassword = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export default forgorPassword;
+export default forgotPassword;
