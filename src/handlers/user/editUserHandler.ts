@@ -1,12 +1,21 @@
 import { User } from "../../db";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "../../utils/config";
+
+interface UserInfo {
+  email: string;
+  name: string;
+  logo: string;
+  about: string;
+}
 
 const editUserHandler = async (
   email: string | undefined,
   password: string | undefined,
   name: string | undefined,
   logo: string | undefined,
-  about: string | undefined,
+  about: string | undefined
 ) => {
   let hashedPass;
   if (password) {
@@ -19,19 +28,24 @@ const editUserHandler = async (
       password: hashedPass,
       name,
       logo,
-      about
+      about,
     },
     { where: { email } }
   );
 
   const user = await User.findOne({ where: { email } });
 
-  return {
+  const userInfo: UserInfo = {
     email,
-    name: user.dataValues.name,
-    logo: user.dataValues.logo,
-    about: user.dataValues.about
+    name,
+    logo,
+    about
   };
+
+  const secretKey = config.secretKey;
+  const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
+
+  return token;
 };
 
 export default editUserHandler;
