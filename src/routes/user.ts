@@ -1,5 +1,5 @@
 import { Router } from "express";
-// import getUser from "../controllers/user/getUser";
+import getUser from "../controllers/user/getUser";
 import login from "../controllers/user/login";
 import register from "../controllers/user/register";
 import editUser from "../controllers/user/editUser";
@@ -14,8 +14,8 @@ const userRouter = Router();
 userRouter.get("/", login); //query
 userRouter.get("/validate", validateToken);
 userRouter.post("/register", register);
-userRouter.get("/forgot",forgorPassword)
-userRouter.put("/reset",resetPassword)
+// userRouter.get("/forgot",forgorPassword)
+// userRouter.put("/reset",resetPassword)
 userRouter.put("/:email", editUser);
 userRouter.delete("/:email", banUser);
 
