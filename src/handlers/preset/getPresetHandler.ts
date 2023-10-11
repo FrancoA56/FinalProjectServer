@@ -50,7 +50,10 @@ const getPresetHandler = async ({
   filters,
 }: Params) => {
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
-  const filteredPresets = await Preset.findAll({ where: { ...parsedFilters } });
+  const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
+  const filteredPresets = allPresets.filter(
+    (filter) => !filter.dataValues.isDisabled
+  );
 
   const getReviews = async (preset: Model) => {
     const reviews = await Review.findAll({
