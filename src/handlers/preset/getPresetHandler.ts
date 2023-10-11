@@ -4,8 +4,10 @@ import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "card",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
 enum PresetCategories {
   BASIC = "basic",
@@ -148,7 +150,7 @@ const getPresetHandler = async ({
         category: data.category,
         reviews,
         ratingAverage: ratingAverage[data.id],
-        purchased:purchased[data.id],
+        purchased: purchased[data.id],
         isDisabled: data.isDisabled,
         release: data.createdAt,
       };
