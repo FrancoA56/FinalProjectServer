@@ -4,8 +4,10 @@ import editPresetHandler from "../../handlers/preset/editPresetHandler";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "card",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
 
 enum PresetCategories {

@@ -3,8 +3,10 @@ import { Preset } from "../../db";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "card",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
 enum PresetCategories {
   BASIC = "basic",
@@ -24,7 +26,7 @@ const addPresetHandler = async ({
   name,
   price = 1,
   defaultColor,
-  type = PresetTypes.CARD,
+  type = PresetTypes.HOME,
   category = PresetCategories.BASIC,
 }: Preset) => {
   if (!name || !price || !defaultColor || !type || !category)

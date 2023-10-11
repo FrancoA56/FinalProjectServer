@@ -4,8 +4,10 @@ import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "card",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
 enum PresetCategories {
   BASIC = "basic",
@@ -38,6 +40,7 @@ interface Params {
   orderType?: OrderType;
   orderPriority?: OrderPriority;
   filters?: string;
+  userEmail?: string;
 }
 
 const getPresetHandler = async ({
@@ -46,9 +49,13 @@ const getPresetHandler = async ({
   orderType = OrderType.RATING,
   orderPriority = OrderPriority.DESC,
   filters,
+  userEmail,
 }: Params) => {
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
-  const filteredPresets = await Preset.findAll({ where: { ...parsedFilters } });
+  const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
+  const filteredPresets = allPresets.filter(
+    (filter) => !filter.dataValues.isDisabled
+  );
 
   const getReviews = async (preset: Model) => {
     const reviews = await Review.findAll({
@@ -138,6 +145,17 @@ const getPresetHandler = async ({
       const reviews = await getReviews(preset);
       const ratingAverage = await calculateAverageRatings([preset]);
       const purchased = await getSells([preset]);
+      const boughtPreset = userEmail
+        ? await Invoice.findOne({
+            where: { isPaid: true, userEmail },
+            include: [
+              {
+                model: InvoiceItem,
+                where: { presetId: data.id },
+              },
+            ],
+          })
+        : false;
 
       return {
         id: data.id,
@@ -148,7 +166,8 @@ const getPresetHandler = async ({
         category: data.category,
         reviews,
         ratingAverage: ratingAverage[data.id],
-        purchased:purchased[data.id],
+        purchased: purchased[data.id],
+        isBought: !!boughtPreset,
         isDisabled: data.isDisabled,
         release: data.createdAt,
       };

@@ -18,8 +18,10 @@ import OrderDetail from "./OrderItem";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "card",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
 
 enum PresetCategories {
@@ -85,7 +87,6 @@ class Preset extends Model<Preset> {
 
   @HasMany(() => OrderDetail)
   orderDetails!: OrderDetail[];
-
 }
 
 export default Preset;
