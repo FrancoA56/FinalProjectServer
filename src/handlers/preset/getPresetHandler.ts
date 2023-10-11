@@ -40,6 +40,7 @@ interface Params {
   orderType?: OrderType;
   orderPriority?: OrderPriority;
   filters?: string;
+  userEmail?: string;
 }
 
 const getPresetHandler = async ({
@@ -48,6 +49,7 @@ const getPresetHandler = async ({
   orderType = OrderType.RATING,
   orderPriority = OrderPriority.DESC,
   filters,
+  userEmail,
 }: Params) => {
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
   const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
@@ -143,6 +145,17 @@ const getPresetHandler = async ({
       const reviews = await getReviews(preset);
       const ratingAverage = await calculateAverageRatings([preset]);
       const purchased = await getSells([preset]);
+      const boughtPreset = userEmail
+        ? await Invoice.findOne({
+            where: { isPaid: true, userEmail },
+            include: [
+              {
+                model: InvoiceItem,
+                where: { presetId: data.id },
+              },
+            ],
+          })
+        : false;
 
       return {
         id: data.id,
@@ -154,6 +167,7 @@ const getPresetHandler = async ({
         reviews,
         ratingAverage: ratingAverage[data.id],
         purchased: purchased[data.id],
+        isBought: !!boughtPreset,
         isDisabled: data.isDisabled,
         release: data.createdAt,
       };
