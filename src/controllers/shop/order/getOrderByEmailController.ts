@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getOrderHandler from "../../handlers/shop/order/getOrderByEmailHandler";
+import getOrderHandler from "../../../handlers/shop/order/getOrderByEmailHandler";
 
 const getOrderByEmailController = async (
   req: Request,

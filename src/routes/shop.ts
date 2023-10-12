@@ -1,11 +1,15 @@
 import { Router } from "express";
-import addInvoiceController from "../controllers/shop/addInvoiceController";
-import addOrderController from "../controllers/shop/addOrderController";
-import getOrderByEmailController from "../controllers/shop/getOrderByEmailController";
+import addOrderController from "../controllers/shop/order/addOrderController";
+import getOrderByEmailController from "../controllers/shop/order/getOrderByEmailController";
+import payOrder from "../controllers/shop/order/createPaymentOrderController";
+import captureOrder from "../controllers/shop/order/paypal/capturePaymentOrderController";
+import cancelOrder from "../controllers/shop/order/paypal/cancelPaymentOrderControler";
 
 const shopRouter = Router();
 
-shopRouter.post("/invoice", addInvoiceController);
+shopRouter.post("/pay_order", payOrder);
+shopRouter.get("/order/capture_order_payment", captureOrder);
+shopRouter.get("/order/cancel_order_payment", cancelOrder);
 shopRouter.get("/order", getOrderByEmailController);
 shopRouter.post("/order", addOrderController);
 
