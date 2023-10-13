@@ -41,7 +41,7 @@ class User extends Model<User> {
   about!: string;
 
   @Column
-  firtsname!: string;
+  firstname!: string;
 
   @Column
   lastname!: string;
