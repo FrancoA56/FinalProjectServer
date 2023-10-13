@@ -5,12 +5,9 @@ const getUserHandler = async (email: string | undefined) => {
 
   if (!user) throw new Error("User doesn't exist.");
 
-  return {
-    email,
-    name: user.dataValues.name,
-    logo: user.dataValues.logo,
-    about: user.dataValues.about
-  };
+  const { name, logo, about, firstname, lastname, country, city, zipcode } = user.dataValues;
+
+  return { email, name, logo, about, firstname, lastname, country, city, zipcode };
 };
 
 export default getUserHandler;

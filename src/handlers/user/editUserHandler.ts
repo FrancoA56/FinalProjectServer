@@ -2,20 +2,19 @@ import { User } from "../../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../utils/config";
-
-interface UserInfo {
-  email: string;
-  name: string;
-  logo: string;
-  about: string;
-}
+import UserInfo from "../../utils/UserInfo";
 
 const editUserHandler = async (
   email: string | undefined,
   password: string | undefined,
   name: string | undefined,
   logo: string | undefined,
-  about: string | undefined
+  about: string | undefined,
+  firstname: string | undefined,
+  lastname: string | undefined,
+  country: string | undefined,
+  city: string | undefined,
+  zipcode: string | undefined
 ) => {
   let hashedPass;
   if (password) {
@@ -39,7 +38,12 @@ const editUserHandler = async (
     email,
     name,
     logo,
-    about
+    about,
+    firstname,
+    lastname,
+    country,
+    city,
+    zipcode,
   };
 
   const secretKey = config.secretKey;

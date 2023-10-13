@@ -2,26 +2,28 @@ import { User } from "../../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../utils/config";
-
-interface UserInfo {
-  email: string;
-  name: string;
-  logo: string;
-  about: string;
-}
+import UserInfo from "../../utils/UserInfo";
 
 const login0Handler = async (
   email: string | undefined,
   name: string | undefined
 ) => {
   const user = await User.findOne({ where: { email } });
+
   if (user) {
+    const { logo, about, firstname, lastname, country, city, zipcode } = user.dataValues;
     const userInfo: UserInfo = {
       email,
-      name: user.dataValues.name,
-      logo: user.dataValues.logo,
-      about: user.dataValues.about,
+      name,
+      logo,
+      about,
+      firstname,
+      lastname,
+      country,
+      city,
+      zipcode,
     };
+
     const secretKey = config.secretKey;
     const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
     return token;
@@ -31,11 +33,13 @@ const login0Handler = async (
 
   const password = await bcrypt.hash("auth0user", SALT_ROUNDS);
 
-  const newUser = await User.create({
+  await User.create({
     email,
     password,
     name,
   });
+
+  const newUser = {email,password,name}
 
   const secretKey = config.secretKey;
   const token = jwt.sign(newUser, secretKey, { expiresIn: "1h" });

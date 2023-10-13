@@ -11,13 +11,12 @@ import {
   IsUrl,
   IsDate,
   HasMany,
-  HasOne
+  HasOne,
 } from "sequelize-typescript";
 
 import Invoice from "./Invoice";
 import Order from "./Order";
 import Review from "./Review";
-
 
 @Table
 class User extends Model<User> {
@@ -42,7 +41,22 @@ class User extends Model<User> {
   about!: string;
 
   @Column
-  isDisabled!:boolean;
+  firtsname!: string;
+
+  @Column
+  lastname!: string;
+
+  @Column
+  country!: string;
+
+  @Column
+  city!: string;
+
+  @Column
+  zipcode!: number;
+
+  @Column
+  isDisabled!: boolean;
 
   @IsDate
   @CreatedAt
