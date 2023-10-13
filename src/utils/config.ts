@@ -14,6 +14,11 @@ const config = {
  cors: process.env.CORS,
  secretKey: process.env.SECRET_KEY,
  dbDeploy: process.env.DB_DEPLOY,
+ paypalApiClient: process.env.PAYPAL_API_CLIENT,
+ paypalApiSecret: process.env.PAYPAL_API_SECRET,
+ paypalApi: process.env.PAYPAL_API,
+ urlClient: process.env.URL_CLIENT,
+
 };
 
 export default config;
