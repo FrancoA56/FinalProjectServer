@@ -39,7 +39,7 @@ const login0Handler = async (
     name,
   });
 
-  const newUser = {email,password,name}
+  const newUser = { email, name }
 
   const secretKey = config.secretKey;
   const token = jwt.sign(newUser, secretKey, { expiresIn: "1h" });
