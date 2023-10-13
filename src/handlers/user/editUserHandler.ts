@@ -28,6 +28,11 @@ const editUserHandler = async (
       name,
       logo,
       about,
+      firstname,
+      lastname,
+      country,
+      city,
+      zipcode
     },
     { where: { email } }
   );
@@ -35,15 +40,15 @@ const editUserHandler = async (
   const user = await User.findOne({ where: { email } });
 
   const userInfo: UserInfo = {
-    email,
-    name,
-    logo,
-    about,
-    firstname,
-    lastname,
-    country,
-    city,
-    zipcode,
+    email: user.dataValues.email,
+    name:user.dataValues.name,
+    logo:user.dataValues.logo,
+    about: user.dataValues.about,
+    firstname: user.dataValues.firstname,
+    lastname: user.dataValues.lastname,
+    country: user.dataValues.country,
+    city: user.dataValues.city,
+    zipcode: user.dataValues.zipcode,
   };
 
   const secretKey = config.secretKey;
