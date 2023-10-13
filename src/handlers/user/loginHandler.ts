@@ -2,13 +2,7 @@ import { User } from "../../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../utils/config";
-
-interface UserInfo {
-  email: string;
-  name: string;
-  logo: string;
-  about: string;
-}
+import UserInfo from "../../utils/UserInfo";
 
 const loginHandler = async (
   email: string | undefined,
@@ -26,12 +20,19 @@ const loginHandler = async (
 
   const isCorrect = await bcrypt.compare(password, user.dataValues.password);
 
+  const { name, logo, about, firstname, lastname, country, city, zipcode } = user.dataValues;
+
   if (isCorrect) {
     const userInfo: UserInfo = {
       email,
-      name: user.dataValues.name,
-      logo: user.dataValues.logo,
-      about: user.dataValues.about,
+      name,
+      logo,
+      about,
+      firstname,
+      lastname,
+      country,
+      city,
+      zipcode,
     };
     const secretKey = config.secretKey;
     const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
