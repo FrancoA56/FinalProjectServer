@@ -17,6 +17,7 @@ import InvoiceItem from "./InvoiceItem";
 
 enum PaymentMethod {
   MERCADO_PAGO = "mercado_pago",
+  PAYPAL = "paypal",
 }
 
 const paymentMethod = Object.values(PaymentMethod);
@@ -38,7 +39,10 @@ class Invoice extends Model<Invoice> {
   paymentMethod!: PaymentMethod;
 
   @Column
-  isPaid!:boolean;
+  isPaid!: boolean;
+
+  @Column
+  paymentId!: string;
 
   @IsDate
   @CreatedAt

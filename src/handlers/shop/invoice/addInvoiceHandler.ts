@@ -14,7 +14,10 @@ interface Product {
 const addInvoiceHandler = async (
   email: string | undefined,
   products: Product[] | undefined,
-  totalAmount: number | undefined
+  totalAmount: number | undefined,
+  paymentId: string,
+  paymentMethod:string
+
 ): Promise<IResponse> => {
 
   if (!email || !products || !totalAmount) {
@@ -25,11 +28,12 @@ const addInvoiceHandler = async (
     const invoice = await Invoice.create({
       userEmail: email,
       totalAmount,
-      paymentMethod: "mercado_pago",
-      isPaid: true
+      paymentMethod,
+      isPaid: false,
+      paymentId
     });
 
-    const addItems = await addInvoiceItem(products, invoice.dataValues.id);
+    const addItems = await addInvoiceItem(products, invoice.dataValues.id, );
     if (!addItems.isSuccess) return addItems;
 
     await deleteOrder(email, 0, false);

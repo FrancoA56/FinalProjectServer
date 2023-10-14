@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getOrderHandler from "../../handlers/shop/order/getOrderByEmailHandler";
+import getOrderHandler from "../../../handlers/shop/order/getOrderByEmailHandler";
 
 const getOrderByEmailController = async (
   req: Request,
@@ -13,7 +13,7 @@ const getOrderByEmailController = async (
     const { email }: IParam = req.query;
 
     const response = await getOrderHandler(email);
-    console.log(response);
+  
     if (!response.isSuccess) {
       res.status(response.status).json({ isSuccess: false, error: response.error });
       return;
