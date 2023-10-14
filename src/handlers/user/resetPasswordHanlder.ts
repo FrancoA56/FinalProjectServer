@@ -1,13 +1,31 @@
 import { User } from "../../db";
+import bcrypt from "bcrypt";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import config from "../../utils/config";
 
-const resetPasswordHandler = async (email: string | undefined, password: string | undefined) => {
-  if (!email) throw new Error("Email is required");
+const resetPasswordHandler = async (token: string, password: string) => {
+  const secretKey = config.secretKey;
 
-  const user = await User.findOne({ where: { email } });
+  const isValid = jwt.verify(token, secretKey) as JwtPayload;
+  if (!isValid) throw new Error("Token invalid or expired");
+  const { email } = isValid;
 
-  if (!user) throw new Error("User doesn't exist.");
+  
+  if (!password) throw new Error("Password is required");
+  let hashedPass;
 
-  return ;
+  const SALT_ROUNDS: number = 10;
+  hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
+
+  await User.update(
+    {
+      password: hashedPass,
+    },
+    { where: { email } }
+  );
+  // const user = await User.findOne({ where: { email } });
+
+  return email;
 };
 
 export default resetPasswordHandler;
