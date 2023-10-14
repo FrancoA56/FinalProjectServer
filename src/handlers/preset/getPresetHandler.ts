@@ -1,5 +1,6 @@
 import { Model } from "sequelize";
 import { Invoice, InvoiceItem, Preset, Review } from "../../db";
+import getPresetByIdHandler from "./getPresetByIdHandler";
 
 enum PresetTypes {
   ABOUT = "about",
@@ -35,6 +36,7 @@ interface Filter {
 }
 
 interface Params {
+  ids?: string;
   page?: number;
   quantity?: number;
   orderType?: OrderType;
@@ -44,6 +46,7 @@ interface Params {
 }
 
 const getPresetHandler = async ({
+  ids,
   page = 1,
   quantity = 10,
   orderType = OrderType.RATING,
@@ -51,6 +54,17 @@ const getPresetHandler = async ({
   filters,
   userEmail,
 }: Params) => {
+  if (ids)
+    return await Promise.all(
+      ids.split(",").map(async (id) => {
+        try {
+          return await getPresetByIdHandler(Number(id));
+        } catch {
+          return null;
+        }
+      })
+    );
+
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
   const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
   const filteredPresets = allPresets.filter(
