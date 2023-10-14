@@ -16,6 +16,7 @@ const capturePaymentOrder = async (token: string | undefined) => {
                 'Content-Type': 'application/json'
             }
         });
+        
         return { isSuccess: true, data: response };
 
     } catch (error) {

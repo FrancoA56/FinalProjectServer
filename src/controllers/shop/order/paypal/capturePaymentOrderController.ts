@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import capturePaymentOrder from "../../../../handlers/shop/order/paypal/capturePaymentOrderHandler"
 import config from '../../../../utils/config';
+import sendEmail from "../../../../handlers/shop/order/sendEmail/sendEmail";
+
 
 const captureOrder = async (
     req: Request,
@@ -13,7 +15,9 @@ const captureOrder = async (
             await capturePaymentOrder(token);
         }
 
-        res.send(`
+    // await sendEmail(email,userName, productsName);
+    await sendEmail("ing.rapri@gmail.com", "Rafael", ["Template1", "Template2" ]);
+    res.send(`
         <html>
             <head>
                 <title>CODE CRAFTED TEMPLATES</title>
@@ -53,9 +57,10 @@ const captureOrder = async (
         </html>
     `);
 
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
-    }
+
+} catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+}
 }
 
 export default captureOrder;
