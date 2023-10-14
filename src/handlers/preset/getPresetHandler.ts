@@ -54,12 +54,9 @@ const getPresetHandler = async ({
   filters,
   userEmail,
 }: Params) => {
-  if (ids) {
-    const idsArray = ids.split(",");
-    console.log(idsArray);
-
+  if (ids)
     return await Promise.all(
-      idsArray.map(async (id) => {
+      ids.split(",").map(async (id) => {
         try {
           return await getPresetByIdHandler(Number(id));
         } catch {
@@ -67,7 +64,6 @@ const getPresetHandler = async ({
         }
       })
     );
-  }
 
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
   const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
