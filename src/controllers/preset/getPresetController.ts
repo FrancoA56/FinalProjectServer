@@ -15,6 +15,7 @@ enum OrderPriority {
 }
 
 interface Preset {
+  ids?: string;
   page?: number;
   quantity?: number;
   orderType?: OrderType;
@@ -29,6 +30,7 @@ const getPresetController = async (
 ): Promise<void> => {
   try {
     const {
+      ids,
       page,
       quantity,
       orderType,
@@ -37,6 +39,7 @@ const getPresetController = async (
       userEmail,
     }: Preset = req.query;
     const presets = await getPresetHandler({
+      ids,
       page,
       quantity,
       orderType,
