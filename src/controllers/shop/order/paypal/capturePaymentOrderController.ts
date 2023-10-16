@@ -1,60 +1,52 @@
 import { Request, Response } from "express";
 import capturePaymentOrder from "../../../../handlers/shop/order/paypal/capturePaymentOrderHandler"
-import config from '../../../../utils/config';
+import sendEmail from "../../../../handlers/shop/order/sendEmail/sendEmail";
+import getInvoiceByPaymentId from "../../../../handlers/shop/invoice/getInvoiceByPaymentId";
+import UpdatePaymentStatus from "../../../../handlers/shop/invoice/UpdatePaymentStatusHandler";
+import template from "../../../../templates/responsePaymentSuccessFul";
+import templateError from "../../../../templates/responsePaymentError";
+
+const templateSuccessful = template();
+const templateErr = templateError();
+
+interface IProduct {
+    dataValues: {
+        preset: {
+            dataValues: {
+                presetName?: string
+            }
+        }
+    }
+}
 
 const captureOrder = async (
     req: Request,
     res: Response) => {
+      
 
     try {
 
         const token = req.query.token;
+
         if (typeof token === 'string') {
             await capturePaymentOrder(token);
+
+            await UpdatePaymentStatus(token);
+
+            const invoice = await getInvoiceByPaymentId(token);
+
+            const userEmail = invoice.data.userEmail;
+            const userName = invoice.data.user.dataValues.userName;
+            const products = invoice.data.invoiceItems.map((product: IProduct) => product.dataValues.preset.dataValues.presetName)
+
+            await sendEmail(userEmail, userName, products, "paypal", null);
         }
 
-        res.send(`
-        <html>
-            <head>
-                <title>CODE CRAFTED TEMPLATES</title>
-                <script>
-                    setTimeout(function() {
-                    window.location.href = "${config.urlClient}";
-                }, 9000);
-                </script>
-            </head>
-            <body style="background-color:#7c7979">
-            <div>
-                <table style="max-width: 450px; padding: 7px; margin:0 auto; border-collapse: collapse;">
-                    <tr>
-                        <td style="padding: 0">
-                            <img style="padding: 0; display: block; border-radius: 10px 10px 0px 0px;" 
-                            src="https://i.postimg.cc/SQPZWLcT/code.jpg" width="100%">
-                        </td>
-                    </tr>
-                    <tr style="height: 200px; ">
-                        <td style="background-color: white">
-                            <div style="margin: 4% 10% 2%; text-align:center ;font-family: Tahoma;">
-        
-                                <p style="color:#65605D; margin: 2px; font-size: 16px">
-                                    <b style="font-size: 24px; color:black">¡Successful Payment!</b>
-                                </p>
-                                <p>Thank you for your purchase, we will be contacting you in the next few hours.</p>
-                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                                    <p style="margin: 10px;">Redirecting to Code Crafted Templates</p>
-                                    <img style="width: 20px; height: 10px; margin-top: 10px;" src="https://i.postimg.cc/7PgSsgzY/puntos.gif">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </body>
-        </html>
-    `);
+        res.send(templateSuccessful);
 
     } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+       
+        res.status(500).send(templateErr);
     }
 }
 

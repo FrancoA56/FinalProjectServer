@@ -2,27 +2,7 @@ import tokenAuthentication from "./TokenAuthentication";
 import axios from 'axios';
 import config from '../../../../utils/config';
 
-const moduleName = "createPaymentPaypalHandler";
-
-interface Product {
-    id?: number;
-    price?: number;
-}
-const createOrderPayment = async (products: Product[], totalAmount: number) => {
-    try {
-
-        const productMapped = products.map((item, index) => {
-            return {
-                name: "Producto " + index,
-                description: "Descripción del Producto " + index,
-                quantity: 1,
-                category: "DIGITAL_GOODS",
-                unit_amount: {
-                    currency_code: "USD",
-                    value: item.price
-                }
-            }
-        });
+const createOrderPayment = async (totalAmount: number) => {
 
         const orderDetail = {
             intent: "CAPTURE",
@@ -53,14 +33,9 @@ const createOrderPayment = async (products: Product[], totalAmount: number) => {
             }
         })
 
-
         const { id: paymentId, links } = respOrder.data;
-        console.log("data", paymentId, "-", links[1].href);
-        return { paymentId, href: links[1].href };
 
-    } catch (error) {
-        return { error: error, module: moduleName }
-    }
+        return { paymentId, href: links[1].href };
 
 }
 

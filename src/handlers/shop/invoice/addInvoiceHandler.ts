@@ -1,10 +1,6 @@
 import { Invoice } from "../../../db";
 import addInvoiceItem from "./addInvoiceItemHandler";
 import deleteOrder from "../order/deleteOrderHandler";
-import ERROR_CODES from "../errorHandler";
-import IResponse from "../interfaceResponse";
-
-const moduleName = 'addInvoiceHandler';
 
 interface Product {
   id?: number;
@@ -18,12 +14,7 @@ const addInvoiceHandler = async (
   paymentId: string,
   paymentMethod: string
 
-): Promise<IResponse> => {
-
-  if (!email || !products || !totalAmount) {
-    return { ...ERROR_CODES.INVALID_PARAM, modulo: moduleName };
-  }
-  try {
+) => {
 
     const invoice = await Invoice.create({
       userEmail: email,
@@ -40,13 +31,6 @@ const addInvoiceHandler = async (
 
     return { isSuccess: true };
 
-  } catch (error) {
-    return {
-      ...ERROR_CODES.CATCH_ERROR,
-      error: (error as Error).message,
-      modulo: moduleName
-    }
-  }
 };
 
 export default addInvoiceHandler;
