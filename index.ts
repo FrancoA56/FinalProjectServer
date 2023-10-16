@@ -5,7 +5,7 @@ import 'reflect-metadata';
 const PORT: number = 3001;
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Database synced correctly");
     server.listen(PORT, () => console.log("Server listening on port " + PORT));
