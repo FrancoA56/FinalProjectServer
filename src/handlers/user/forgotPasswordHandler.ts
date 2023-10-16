@@ -10,7 +10,7 @@ const forgotPasswordHandler = async (email: string | undefined) => {
   if (!user) throw new Error("Email doesn't exist.");
 
 
-  const token = jwt.sign({ email }, secretKey, { expiresIn: "10m" });
+  const token = jwt.sign({ email }, secretKey, { expiresIn: "1h" });
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
