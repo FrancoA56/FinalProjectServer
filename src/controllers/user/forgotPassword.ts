@@ -3,7 +3,10 @@ import forgotPasswordHandler from "../../handlers/user/forgotPasswordHandler";
 
 const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   try {
-    const email: string = req.body.email;
+    interface User {
+      email?: string;
+    }
+    const { email }: User = req.body;
     const loweredEmail = email.toLowerCase();
     const user = await forgotPasswordHandler(loweredEmail);
     res.status(200).json(user);
