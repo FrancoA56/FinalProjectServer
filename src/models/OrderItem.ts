@@ -19,9 +19,6 @@ class OrderItem extends Model<OrderItem> {
   @Column
   id!: number;
 
-  @Column
-  price!: number;
-
   @ForeignKey(() => Preset)
   @Column
   presetId!: number;
