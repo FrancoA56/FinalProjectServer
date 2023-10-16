@@ -33,8 +33,6 @@ const sendMail = async (
     const transporter = await createTransporter();
     const info = await transporter.sendMail(mailOptions);
 
-    console.log("Mensaje enviado: %s", info.message);
-    console.log("Url del mensaje: %s", nodemailer.getTestMessageUrl(info));
     return { isSuccess: true, messageId: info.messageId };
 }
 
