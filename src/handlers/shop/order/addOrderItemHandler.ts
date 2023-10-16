@@ -1,40 +1,32 @@
 import { OrderItem } from "../../../db";
-import ERROR_CODES from "../errorHandler";
-import IResponse from "../interfaceResponse";
-
-const moduleName = 'addInvoiceItemHandler';
 
 interface IProduct {
     id?: number;
 }
 
-const addInvoiceItem = async (
+interface IMapPreset {
+    dataValues: {
+        presetId?: number;
+    }
+}
+
+const addOrderItem = async (
     idOrder: number,
     products: IProduct[]
-    
-): Promise<IResponse> => {
-    try {
 
-        const newParamProducts = products.map(p => ({
-            presetId: p,
-            orderId: idOrder
-        }));
+) => {
 
-        const orderItem  = await OrderItem.bulkCreate(newParamProducts);
+    const newParamProducts = products.map(p => ({
+        presetId: p,
+        orderId: idOrder
+    }));
 
-        if (!orderItem) return { ...ERROR_CODES.DATABASE_ERROR, modulo: moduleName }
+    const orderItem = await OrderItem.bulkCreate(newParamProducts);
 
-        return { isSuccess: true, data: orderItem }
+    const mappingOrderItem =  orderItem.map((item: IMapPreset) => item.dataValues.presetId);
 
-    } catch (error) {
-
-        return {
-            ...ERROR_CODES.CATCH_ERROR,
-            error: (error as Error).message,
-            modulo: moduleName
-        }
-    }
+    return { data: !mappingOrderItem ? [] : mappingOrderItem }
 
 }
 
-export default addInvoiceItem;
+export default addOrderItem;

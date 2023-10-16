@@ -1,50 +1,40 @@
 import { Order } from "../../../db";
 import findOrderByEmail from "./getOrderByEmailHandler";
 import addOrderItem from "./addOrderItemHandler";
-import deleteOrderItem from "./deleteOrderHandler";
-import ERROR_CODES from "../errorHandler";
-import IResponse from "../interfaceResponse";
-
-
-const moduleName = 'addOrderHandler';
+import checkItem from "./checkOrderItemExistence";
 
 interface IProduct {
     id?: number;
 }
 
 const addOrderHandler = async (
-    email: string | undefined,
-    products: IProduct[] | undefined,
-): Promise<IResponse> => {
+    email?: string,
+    products?: IProduct[],
+) => {
 
-    if (!email || !products) {
-        return { ...ERROR_CODES.INVALID_PARAM, modulo: moduleName };
-    }
-    try {
+    const findResponse = await findOrderByEmail(email);
 
-        const findResponse = await findOrderByEmail(email);
+    if (!findResponse.data.length) {
+        const order = await Order.create({ userEmail: email });
 
-        if (!findResponse.isSuccess) {
-            const order = await Order.create({ userEmail: email });
+        const addItems = await addOrderItem(order.dataValues.id, products);
 
-            const addItems = await addOrderItem(order.dataValues.id, products);
-            if (!addItems.isSuccess) return addItems;
+        return addItems;
 
-        } else {
+    } else {
 
-            await deleteOrderItem(email, findResponse.data[0].id, true);
+        const productMapping: IProduct[] = [];
 
-            await addOrderItem(findResponse.data[0].id, products);
+        for (const product of products) {
+            const resp = await checkItem(email, product);
+            if (!resp.exist) {
+                productMapping.push(product);
+            }
         }
 
-        return { isSuccess: true };
+        const addItems = await addOrderItem(findResponse.id, productMapping);
 
-    } catch (error) {
-        return {
-            ...ERROR_CODES.CATCH_ERROR,
-            error: (error as Error).message,
-            modulo: moduleName
-        }
+        return addItems;
     }
 };
 

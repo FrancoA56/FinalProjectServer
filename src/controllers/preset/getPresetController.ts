@@ -20,6 +20,7 @@ interface Preset {
   orderType?: OrderType;
   orderPriority?: OrderPriority;
   filters?: string;
+  userEmail?: string;
 }
 
 const getPresetController = async (
@@ -27,14 +28,21 @@ const getPresetController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { page, quantity, orderType, orderPriority, filters }: Preset =
-      req.query;
+    const {
+      page,
+      quantity,
+      orderType,
+      orderPriority,
+      filters,
+      userEmail,
+    }: Preset = req.query;
     const presets = await getPresetHandler({
       page,
       quantity,
       orderType,
       orderPriority,
       filters,
+      userEmail,
     });
     res.status(200).json(presets);
   } catch (error) {

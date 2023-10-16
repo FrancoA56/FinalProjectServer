@@ -4,6 +4,7 @@ import getOrderByEmailController from "../controllers/shop/order/getOrderByEmail
 import payOrder from "../controllers/shop/order/createPaymentOrderController";
 import captureOrder from "../controllers/shop/order/paypal/capturePaymentOrderController";
 import cancelOrder from "../controllers/shop/order/paypal/cancelPaymentOrderControler";
+import deleteOrderItem from "../controllers/shop/order/deleteOrderItemController";
 
 const shopRouter = Router();
 
@@ -12,5 +13,6 @@ shopRouter.get("/order/capture_order_payment", captureOrder);
 shopRouter.get("/order/cancel_order_payment", cancelOrder);
 shopRouter.get("/order", getOrderByEmailController);
 shopRouter.post("/order", addOrderController);
+shopRouter.delete("/order", deleteOrderItem);
 
 export default shopRouter;
