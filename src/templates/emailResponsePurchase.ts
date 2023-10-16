@@ -1,8 +1,9 @@
 
-const templateEmail = (userName: string, templateName: string[]) => {
+const emailPaypal = (userName: string, templateName: string[]) => {
+
 
     return `
-                <div>
+                <div style="width:100%; height: 80vb; background-color:rgb(185, 185, 185)">
                 <table style="max-width: 450px; padding: 7px; margin:0 auto; border-collapse: collapse;">
                     <tr>
                         <td style="padding: 0">
@@ -14,14 +15,14 @@ const templateEmail = (userName: string, templateName: string[]) => {
                         <td style="background-color: white">
                             <div style="margin: 4% 10% 2%; text-align:center ;font-family: Tahoma;">
         
-                                <p>¡Hello ${userName}, thank you for your purchase!</p>
-                                <p>Purchase Details:</p>
-                                <ul>
+                               <p>¡Hello ${userName}, thank you for your purchase!</p>
+                                <p><u>Purchase Details</u></p>
+                                <ul style="text-align:start">
                                 ${templateName.map(template => {
 
-                                    return `<li style="list-style: none;">${template}</li>`
+                                    return `<li style="list-style: none;">* ${template}</li>`
 
-                                 })}
+                                    })}
                                 </ul>
         
                                 <p>We will be contacting you in the next few hours.</p>
@@ -33,4 +34,4 @@ const templateEmail = (userName: string, templateName: string[]) => {
             `;
 }
 
-export default templateEmail;
+export default emailPaypal;

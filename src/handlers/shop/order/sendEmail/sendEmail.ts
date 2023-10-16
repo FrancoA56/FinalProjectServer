@@ -1,33 +1,41 @@
 const nodemailer = require("nodemailer");
 import createTransporter from "../../../../utils/emailConfig";
 import config from "../../../../utils/config"
-import template from "./templateEmail";
+import templateEmailPaypal from "../../../../templates/emailResponsePurchase";
+import templateEmailInfoBT from "../../../../templates/emailInfoBankTransfer";
+
+
 
 const sendMail = async (
     emailClient: string,
     userName: string,
     templateName: string[],
+    paymentMethod: string,
+    totalAmount: number
 ) => {
-    try {
 
-        let mailOptions = {
-            from: `"Code Crafted Templates" <${config.senderEmail}>`,
-            to: `${emailClient}, ${config.senderEmail}`,
-            subject: "Purchase Confirmation on Code Crafted Templates",
-            text: "",
-            html: template(userName, templateName)
-        };
+    const html = paymentMethod === "paypal" ?
+        templateEmailPaypal(userName, templateName) :
+        templateEmailInfoBT(userName, totalAmount)
 
-        const transporter = await createTransporter();
-        const info = await transporter.sendMail(mailOptions);
-        console.log(info);
-        console.log("Mensaje enviado: %s", info.message);
-        console.log("Url del mensaje: %s", nodemailer.getTestMessageUrl(info));
-        return { isSuccess: true, messageId: info.messageId };
+        const subject= paymentMethod ==="paypal" ?
+        "Purchase Confirmation on Code Crafted Templates" :
+        "The bank details for you to make the payment for your purchase";
 
-    } catch (error) {
-        console.log({ isSuccess: false, error: (error as Error).message });
-    }
+    let mailOptions = {
+        from: `"Code Crafted Templates" <${config.senderEmail}>`,
+        to: `${emailClient}, ${config.senderEmail}`,
+        subject: subject,
+        text: "",
+        html: html
+    };
+
+    const transporter = await createTransporter();
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log("Mensaje enviado: %s", info.message);
+    console.log("Url del mensaje: %s", nodemailer.getTestMessageUrl(info));
+    return { isSuccess: true, messageId: info.messageId };
 }
 
 export default sendMail;
