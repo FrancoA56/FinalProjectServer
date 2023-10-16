@@ -16,7 +16,7 @@ const addInvoiceHandler = async (
   products: Product[] | undefined,
   totalAmount: number | undefined,
   paymentId: string,
-  paymentMethod:string
+  paymentMethod: string
 
 ): Promise<IResponse> => {
 
@@ -33,10 +33,10 @@ const addInvoiceHandler = async (
       paymentId
     });
 
-    const addItems = await addInvoiceItem(products, invoice.dataValues.id, );
+    const addItems = await addInvoiceItem(products, invoice.dataValues.id,);
     if (!addItems.isSuccess) return addItems;
 
-    await deleteOrder(email, 0, false);
+    await deleteOrder(email, null, null, true);
 
     return { isSuccess: true };
 

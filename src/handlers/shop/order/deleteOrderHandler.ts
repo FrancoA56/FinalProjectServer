@@ -1,27 +1,25 @@
 import { OrderItem, Order } from "../../../db";
-import ERROR_CODES from "../errorHandler";
-import IResponse from "../interfaceResponse";
 
-const moduleName = "deleteOrderItem";
+const deleteOrderItem = async (
+    userEmail: string,
+    presetId: number,
+    orderId: number,
+    deleteAllOrder: boolean
+) => {
 
-const deleteOrderItem = async (email: string, orderId: number, deleteOnlyItems: boolean): Promise<IResponse> => {
-    try {
-        if (deleteOnlyItems) {
-            await OrderItem.destroy({ where: { orderId } });
-        } else {
-            await Order.destroy({ where: { userEmail: email } });
-        }
+    if (!deleteAllOrder) {
 
-        return { isSuccess: true }
+        await OrderItem.destroy({
+            where: { presetId, orderId }
+        });
 
-    } catch (error) {
+    } else {
 
-        return {
-            ...ERROR_CODES.CATCH_ERROR,
-            error: (error as Error).message,
-            modulo: moduleName
-        }
+        await Order.destroy({ where: { userEmail } });
     }
+
+    return { isSuccess: true }
+
 }
 
 export default deleteOrderItem;
