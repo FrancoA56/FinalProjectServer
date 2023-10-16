@@ -2,13 +2,16 @@ import { User } from "../../db";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../utils/config";
+import validateTokenHandler from "./validateTokenHandler";
 
 const resetPasswordHandler = async (token: string, password: string) => {
   const secretKey = config.secretKey;
 
-  const isValid = jwt.verify(token, secretKey) as JwtPayload;
+  const isValid = validateTokenHandler(token)
   if (!isValid) throw new Error("Token invalid or expired");
-  const { email } = isValid;
+  
+  const decode = jwt.verify(token, secretKey) as JwtPayload;
+  const { email } = decode;
 
   
   if (!password) throw new Error("Password is required");

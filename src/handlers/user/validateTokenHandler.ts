@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../utils/config";
 
-function validateToken(token: string | undefined) {
+function validateTokenHandler(token: string | undefined) {
   if (!token) throw new Error("There isn't token.");
 
   const decodedToken = jwt.verify(token, config.secretKey) as JwtPayload;
@@ -10,4 +10,4 @@ function validateToken(token: string | undefined) {
   return decodedToken.exp && decodedToken.exp > currentTime;
 }
 
-export default validateToken;
+export default validateTokenHandler;

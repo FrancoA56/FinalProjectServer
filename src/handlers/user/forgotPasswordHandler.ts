@@ -2,14 +2,15 @@ import config from "../../utils/config";
 import { User } from "../../db";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+const  {secretKey, cors: baseUrl} = config;
 
 const forgotPasswordHandler = async (email: string | undefined) => {
+  
   const user = await User.findOne({ where: { email } });
   if (!user) throw new Error("Email doesn't exist.");
 
-  const  secretKey = config.secretKey;
 
-  const token = jwt.sign({ email }, secretKey, { expiresIn: "2m" });
+  const token = jwt.sign({ email }, secretKey, { expiresIn: "10m" });
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -34,10 +35,9 @@ const forgotPasswordHandler = async (email: string | undefined) => {
     to: `${email}`,
     subject:
       "Link to recover your account Codecrafted Templates – The Final Project",
-    text: `localhost:3000/reset-password/${token}`,
+    html: `<a href="${baseUrl}/reset-password/${token}" target=”_blank” >Recover your password</a>`
   };
 
-  console.log(mailOptions);
   await transporter.sendMail(mailOptions)
 
   return email

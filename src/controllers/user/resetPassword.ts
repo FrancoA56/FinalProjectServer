@@ -8,7 +8,7 @@ const resetPassword = async (req: Request, res: Response): Promise<void> => {
       password?: string;
     }
     const { token }: User = req.params;
-    const { password }; User = req.body;
+    const { password }: User = req.body;
 
     const user = await resetPasswordHandler(token, password);
     res.status(200).json(user);

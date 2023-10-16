@@ -13,8 +13,8 @@ const userRouter = Router();
 
 userRouter.get("/", login); //query
 userRouter.get("/validate", validateToken);
-userRouter.get("/forgot",forgotPassword)
 userRouter.get("/:email", getUser);
+userRouter.post("/forgot",forgotPassword)
 userRouter.post("/login0", login0);
 userRouter.post("/register", register);
 userRouter.put("/reset/:token",resetPassword)
