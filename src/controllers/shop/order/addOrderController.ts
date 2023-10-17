@@ -21,7 +21,7 @@ const addOrderController = async (
 
     const response = await getOrderHandler(email);
 
-    res.status(201).json(response.data);
+    res.status(201).json(response);
 
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
