@@ -12,8 +12,8 @@ import login0 from "../controllers/user/login0";
 const userRouter = Router();
 
 userRouter.get("/", login); //query
+userRouter.get("/users", getUser);
 userRouter.get("/validate", validateToken);
-userRouter.get("/:email", getUser);
 userRouter.post("/forgot",forgotPassword)
 userRouter.post("/login0", login0);
 userRouter.post("/register", register);
