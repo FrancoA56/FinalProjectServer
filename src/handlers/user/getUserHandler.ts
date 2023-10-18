@@ -2,7 +2,6 @@ import { Op } from "sequelize";
 import { User } from "../../db";
 import { Model } from "sequelize";
 
-
 enum OrderType {
   NAME = "name",
   CREATED = "createdAt",
@@ -36,26 +35,28 @@ const getUserHandler = async (
 ) => {
   const parsedFilters = filters ? JSON.parse(filters) : {};
 
-  const orderOptions = (type: OrderType, priority: OrderPriority): OrderItem[] => {
-      switch (type) {
-        case "name":
-          return [['name', priority]];
-        case "createdAt":
-          return [['createdAt', priority]];
-        default:
-          return undefined;
-      }
-  
+  const orderOptions = (
+    type: OrderType = OrderType.NAME,
+    priority: OrderPriority = OrderPriority.DESC
+  ): OrderItem[] => {
+    switch (type) {
+      case "name":
+        return [["name", priority]];
+      case "createdAt":
+        return [["createdAt", priority]];
+      default:
+        return undefined;
+    }
   };
 
   const orderOption = orderOptions(orderType, orderPriority);
 
   if (!name) {
-    console.log(orderOption)
+    console.log(orderOption);
     const users = await User.findAll({
       where: { ...parsedFilters },
       attributes: attributes,
-      order: orderOption
+      order: orderOption,
     });
 
     return users;
@@ -69,7 +70,7 @@ const getUserHandler = async (
       },
     },
     attributes: attributes,
-    order:orderOption
+    order: orderOption,
   });
 
   return userByName;
