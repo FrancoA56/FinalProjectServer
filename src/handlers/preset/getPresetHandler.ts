@@ -178,6 +178,8 @@ const getPresetHandler = async ({
         color: data.defaultColor,
         type: data.type,
         category: data.category,
+        image: data.image,
+        url: data.url,
         reviews,
         ratingAverage: ratingAverage[data.id],
         purchased: purchased[data.id],
