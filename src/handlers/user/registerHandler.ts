@@ -29,7 +29,8 @@ const registerHandler = async (
   const newUser = await User.create({
     email,
     password,
-    name
+    name,
+    isDisabled: false
   });
   
   const userInfo: UserInfo = {
