@@ -12,6 +12,8 @@ interface PresetInfo {
   color: string;
   type: string;
   category: string;
+  image?: string;
+  url?: string;
   reviews: Review[];
   ratingAverage: number;
   purchased: number;
@@ -60,6 +62,8 @@ const getPresetByIdHandler = async (
     color: data.defaultColor,
     type: data.type,
     category: data.category,
+    image: data.image,
+    url: data.url,
     reviews,
     ratingAverage,
     purchased,

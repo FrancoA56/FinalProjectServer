@@ -29,10 +29,20 @@ const editPresetController = async (
       type?: PresetTypes;
       category?: PresetCategories;
       isDisabled?: boolean;
+      image?: string;
+      url?: string;
     }
     const { id }: Preset = req.params;
-    const { name, price, color, type, category, isDisabled }: Preset =
-      req.query;
+    const {
+      name,
+      price,
+      color,
+      type,
+      category,
+      isDisabled,
+      image,
+      url,
+    }: Preset = req.query;
     const preset = await editPresetHandler(id, {
       name,
       price,
@@ -40,6 +50,8 @@ const editPresetController = async (
       type,
       category,
       isDisabled,
+      image,
+      url,
     });
     res.status(200).json(preset);
   } catch (error) {
