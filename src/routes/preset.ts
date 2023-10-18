@@ -8,8 +8,8 @@ import disablePresetController from "../controllers/preset/disablePresetControll
 const presetRouter = Router();
 
 presetRouter.get("/:id", getPresetByIdController);
-presetRouter.post("/", addPresetController)
 presetRouter.get("/", getPresetController);
+presetRouter.post("/", addPresetController)
 presetRouter.put("/:id", editPresetController)
 presetRouter.delete("/:id", disablePresetController)
 
