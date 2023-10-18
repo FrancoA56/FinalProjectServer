@@ -61,6 +61,12 @@ class Preset extends Model<Preset> {
   category!: PresetCategories;
 
   @Column
+  image!: string;
+
+  @Column
+  url!: string;
+
+  @Column
   isDisabled!: boolean;
 
   @IsDate

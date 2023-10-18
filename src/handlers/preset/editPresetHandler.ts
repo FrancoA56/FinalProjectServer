@@ -23,6 +23,8 @@ interface Preset {
   type?: PresetTypes;
   category?: PresetCategories;
   isDisabled?: boolean;
+  image?: string;
+  url?: string;
 }
 
 const editPresetHandler = async (
