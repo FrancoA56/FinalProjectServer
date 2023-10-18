@@ -47,6 +47,8 @@ const getPresetController = async (
       filters,
       userEmail,
     });
+    const totalCount = presets.length;
+    res.setHeader("X-Total-Count", totalCount);
     res.status(200).json(presets);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
