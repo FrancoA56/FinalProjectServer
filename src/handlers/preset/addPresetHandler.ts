@@ -46,10 +46,14 @@ const addPresetHandler = async ({
     url,
   });
 
-  const presetImages = images.map((url) => ({
-    presetId: newPreset.dataValues.id,
-    url,
-  }));
+  if (typeof images === "number") images = [(images as number).toString()];
+  if (typeof images === "string") images = [images];
+  const presetImages = images
+    ? images.map((url) => ({
+        presetId: newPreset.dataValues.id,
+        url,
+      }))
+    : [];
   await PresetImage.bulkCreate(presetImages);
 
   const editedPreset = await Preset.findOne({
