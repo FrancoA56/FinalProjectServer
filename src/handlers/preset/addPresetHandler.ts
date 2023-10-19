@@ -1,4 +1,4 @@
-import { Preset } from "../../db";
+import { Preset, PresetImage } from "../../db";
 
 enum PresetTypes {
   ABOUT = "about",
@@ -20,7 +20,7 @@ interface Preset {
   defaultColor?: string;
   type?: PresetTypes;
   category?: PresetCategories;
-  image?: string;
+  images?: string[];
   url?: string;
 }
 
@@ -30,7 +30,7 @@ const addPresetHandler = async ({
   defaultColor,
   type = PresetTypes.HOME,
   category = PresetCategories.BASIC,
-  image,
+  images,
   url,
 }: Preset) => {
   if (!name || !price || !defaultColor || !type || !category)
@@ -43,11 +43,46 @@ const addPresetHandler = async ({
     type,
     category,
     isDisabled: false,
-    image,
     url,
   });
 
-  return newPreset;
+  if (typeof images === "number") images = [(images as number).toString()];
+  if (typeof images === "string") images = [images];
+  const presetImages = images
+    ? images.map((url) => ({
+        presetId: newPreset.dataValues.id,
+        url,
+      }))
+    : [];
+  await PresetImage.bulkCreate(presetImages);
+
+  const editedPreset = await Preset.findOne({
+    where: { id: newPreset.dataValues.id },
+    include: [
+      {
+        model: PresetImage,
+        attributes: ["url"],
+      },
+    ],
+  });
+  const formattedImages = editedPreset.dataValues.images.map(
+    (img: { url: string }) => img.url
+  );
+
+  const data = editedPreset.dataValues;
+  return {
+    id: data.id,
+    name: data.name,
+    price: data.price,
+    color: data.defaultColor,
+    type: data.type,
+    category: data.category,
+    url: data.url,
+    images: formattedImages,
+    isDisabled: data.isDisabled,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  };
 };
 
 export default addPresetHandler;
