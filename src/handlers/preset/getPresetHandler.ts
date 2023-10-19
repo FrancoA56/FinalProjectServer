@@ -1,4 +1,4 @@
-import { Model } from "sequelize";
+import { Model, Op, where } from "sequelize";
 import { Invoice, InvoiceItem, Preset, Review } from "../../db";
 import getPresetByIdHandler from "./getPresetByIdHandler";
 
@@ -30,9 +30,9 @@ enum OrderPriority {
 }
 
 interface Filter {
-  type?: PresetTypes;
-  category?: PresetCategories;
-  defaultColor?: string;
+  types?: PresetTypes[];
+  categories?: PresetCategories[];
+  defaultColors?: string[];
 }
 
 interface Params {
@@ -66,8 +66,36 @@ const getPresetHandler = async ({
     );
 
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
-  const allPresets = await Preset.findAll({ where: { ...parsedFilters } });
-  const filteredPresets = allPresets.filter(
+  const { types = [], categories = [], defaultColors = [] } = parsedFilters;
+  const whereFilters = [];
+
+  if (types.length)
+    whereFilters.push({
+      [Op.or]: types.map((type) => ({
+        type,
+      })),
+    });
+
+  if (categories.length)
+    whereFilters.push({
+      [Op.or]: categories.map((category) => ({
+        category,
+      })),
+    });
+
+  if (defaultColors.length)
+    whereFilters.push({
+      [Op.or]: defaultColors.map((defaultColor) => ({
+        defaultColor,
+      })),
+    });
+
+  const filteredPresets = await Preset.findAll({
+    where: {
+      [Op.and]: whereFilters,
+    },
+  });
+  const enabledPresets = filteredPresets.filter(
     (filter) => !filter.dataValues.isDisabled
   );
 
@@ -100,7 +128,7 @@ const getPresetHandler = async ({
 
     return avgRatings;
   };
-  const averageRatings = await calculateAverageRatings(filteredPresets);
+  const averageRatings = await calculateAverageRatings(enabledPresets);
 
   const getSells = async (presets: Model[]) => {
     const sells: Record<number, number> = {};
@@ -125,7 +153,7 @@ const getPresetHandler = async ({
 
     return sells;
   };
-  const sells = await getSells(filteredPresets);
+  const sells = await getSells(enabledPresets);
 
   const sortingFunction = (a: Model, b: Model) => {
     const sortOrder = orderPriority === OrderPriority.ASC ? 1 : -1;
@@ -151,7 +179,7 @@ const getPresetHandler = async ({
         return 0;
     }
   };
-  const orderedPresets = filteredPresets.sort(sortingFunction);
+  const orderedPresets = enabledPresets.sort(sortingFunction);
 
   const presets = await Promise.all(
     orderedPresets.map(async (preset) => {
