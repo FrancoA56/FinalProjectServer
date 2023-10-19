@@ -66,7 +66,12 @@ const getPresetHandler = async ({
     );
 
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
-  const { types = [], categories = [], defaultColors = [] } = parsedFilters;
+  let { types = [], categories = [], defaultColors = [] } = parsedFilters;
+  
+  if (!Array.isArray(types)) types = [types]
+  if (!Array.isArray(categories)) categories = [categories]
+  if (!Array.isArray(defaultColors)) defaultColors = [defaultColors]
+  
   const whereFilters = [];
 
   if (types.length)
