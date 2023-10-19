@@ -25,8 +25,17 @@ if (config.dev) {
   });
 }
 
-const { User, Admin, Preset, Invoice, InvoiceItem, Review, Order, OrderItem } =
-  sequelize.models;
+const {
+  User,
+  Admin,
+  Preset,
+  Invoice,
+  InvoiceItem,
+  Review,
+  Order,
+  OrderItem,
+  PresetImage,
+} = sequelize.models;
 
 export {
   sequelize,
@@ -37,5 +46,6 @@ export {
   InvoiceItem,
   Order,
   OrderItem,
-  Review
+  Review,
+  PresetImage,
 };

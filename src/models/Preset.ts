@@ -12,8 +12,10 @@ import {
   HasMany,
   DataType,
 } from "sequelize-typescript";
+import PresetImage from "./PresetImage";
 import InvoiceDetail from "./InvoiceItem";
 import OrderDetail from "./OrderItem";
+import { HasManySetAssociationsMixin, NonAttribute } from "sequelize";
 
 enum PresetTypes {
   ABOUT = "about",
@@ -61,9 +63,6 @@ class Preset extends Model<Preset> {
   category!: PresetCategories;
 
   @Column
-  image!: string;
-
-  @Column
   url!: string;
 
   @Column
@@ -93,6 +92,11 @@ class Preset extends Model<Preset> {
 
   @HasMany(() => OrderDetail)
   orderDetails!: OrderDetail[];
+
+  @HasMany(() => PresetImage)
+  images!: NonAttribute<PresetImage[]>;
+
+  declare setImages: HasManySetAssociationsMixin<PresetImage, PresetImage["id"]>;
 }
 
 export default Preset;
