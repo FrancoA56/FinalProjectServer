@@ -20,7 +20,7 @@ import { HasManySetAssociationsMixin, NonAttribute } from "sequelize";
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  CART = "card",
+  CART = "cart",
   SHOP = "shop",
   DETAIL = "detail",
   PROFILE = "profile",
