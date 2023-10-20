@@ -56,15 +56,3 @@ const forgotPasswordHandler = async (email: string | undefined) => {
 };
 
 export default forgotPasswordHandler;
-
-
-         
-   
-    // <p>¡Hello!</p>
-    // <br />
-    // <p>Click the following link to recover your password: <a href="${baseUrl}/reset-password/${token}" target=”_blank” >Link to reset</a></p>
-    // <p>If you did not request this change, please ignore this email.</p>
-    // <br />
-    // <p>Sincerely,</p>
-    // <br />
-    // <p>The Codecrafted Templates team</p>
