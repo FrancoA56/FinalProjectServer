@@ -34,8 +34,20 @@ const forgotPasswordHandler = async (email: string | undefined) => {
     from: `codeCraftedTemplates@gmail.com`,
     to: `${email}`,
     subject:
-      "Link to recover your account Codecrafted Templates – The Final Project",
-    html: `<a href="${baseUrl}/reset-password/${token}" target=”_blank” >Recover your password</a>`
+      "Link to recover your account Codecrafted Templates - The Final Project",
+    html: `
+    <img src="https://res.cloudinary.com/codecrafttemplates/image/upload/v1697045472/codeCraft/grid_landscape_csf84w.jpg" 
+      alt="Logo Codecrafted Templates" 
+      style="width: 95%; height: auto; display: block; justify-content: center; border: 6px solid rgba(94, 195, 191, 1);">
+      <br />
+    <h2>¡Hello!</h2>
+      <br />
+    <p style = "font-size: 15px;">Click the following link to recover your password: <a href="${baseUrl}/reset-password/${token}" target=”_blank” >Link to reset</a></p>
+    <p style = "font-size: 15px;">If you did not request this change, please ignore this email.</p>
+      <br />
+    <h4 style = "font-size: 13px;">Sincerely,</h4>
+    <h3>The Codecrafted Templates team</h3>
+    `
   };
 
   await transporter.sendMail(mailOptions)
