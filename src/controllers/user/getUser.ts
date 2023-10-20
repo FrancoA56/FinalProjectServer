@@ -14,13 +14,14 @@ enum OrderPriority {
 const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     interface User {
+      id?:number;
       name?: string;
       filters?: string;
       orderType?: OrderType;
       orderPriority?: OrderPriority;
     }
-    const { name, filters, orderType, orderPriority,  }: User = req.query;
-    const user = await getUserHandler(name, filters, orderType, orderPriority,);
+    const { id, name, filters, orderType, orderPriority,  }: User = req.query;
+    const user = await getUserHandler(id, name, filters, orderType, orderPriority,);
     const totalCount = user.length;
     res.setHeader("X-Total-Count", totalCount);
 
