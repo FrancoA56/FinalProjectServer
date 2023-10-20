@@ -42,7 +42,7 @@ const forgotPasswordHandler = async (email: string | undefined) => {
       <br />
     <h2>¡Hello!</h2>
       <br />
-    <p style = "font-size: 15px;">Click the following link to recover your password: <a href="${baseUrl}/reset-password/${token}" target=”_blank” >Link to reset</a></p>
+    <p style = "font-size: 15px;">Click <a href="${baseUrl}/reset-password/${token}" target=”_blank” >This Link</a> to recover your password.</p>
     <p style = "font-size: 15px;">If you did not request this change, please ignore this email.</p>
       <br />
     <h4 style = "font-size: 13px;">Sincerely,</h4>
