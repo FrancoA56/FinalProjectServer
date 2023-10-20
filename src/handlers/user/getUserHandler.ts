@@ -13,6 +13,7 @@ enum OrderPriority {
 type OrderItem = [string, OrderPriority];
 
 const attributes: string[] = [
+  "id",
   "name",
   "email",
   "logo",
@@ -27,14 +28,46 @@ const attributes: string[] = [
 ];
 
 const getUserHandler = async (
+  id: number | undefined,
   name: string | undefined,
   filters: string | undefined,
   orderType = OrderType.NAME,
   orderPriority = OrderPriority.ASC
 ) => {
+  let user;
+  if (id) {
+    user = await User.findByPk(id);
+    const {
+      name,
+      email,
+      logo,
+      about,
+      firstname,
+      lastname,
+      country,
+      city,
+      zipcode,
+      isDisabled,
+      createdAt,
+    } = user.dataValues;
+    return [{
+      id,
+      name,
+      email,
+      logo,
+      about,
+      firstname,
+      lastname,
+      country,
+      city,
+      zipcode,
+      isDisabled,
+      createdAt,
+    }];
+  }
+
   const parsedFilters = filters ? JSON.parse(filters) : {};
   const orderOption: OrderItem[] = [[orderType, orderPriority]];
-  let user;
   if (!name) {
     user = await User.findAll({
       where: { ...parsedFilters },

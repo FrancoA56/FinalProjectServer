@@ -12,6 +12,7 @@ import {
   IsDate,
   HasMany,
   HasOne,
+  AutoIncrement,
 } from "sequelize-typescript";
 
 import Invoice from "./Invoice";
@@ -20,6 +21,11 @@ import Review from "./Review";
 
 @Table
 class User extends Model<User> {
+  
+  @AutoIncrement
+  @Column
+  id?:number;
+
   @IsEmail
   @PrimaryKey
   @Column
