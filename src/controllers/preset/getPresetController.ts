@@ -46,6 +46,7 @@ interface adminQueries {
   _sort?: OrderType;
   type?: TypeFilter;
   category?: CategoryFilter;
+  name?: string;
 }
 
 const getPresetController = async (
@@ -63,11 +64,11 @@ const getPresetController = async (
       userEmail,
     }: Preset = req.query;
 
-    const { _start, _end, _order, _sort, type, category }: adminQueries =
+    const { _start, _end, _order, _sort, type, category, name }: adminQueries =
       req.query;
 
     const presets = await getPresetHandler(
-      { _start, _end, _order, _sort, type, category: category },
+      { _start, _end, _order, _sort, type, category, name },
       {
         ids,
         page,

@@ -57,6 +57,7 @@ interface adminQueries {
   _sort?: OrderType;
   type?: TypeFilter;
   category?: CategoryFilter;
+  name?: string;
 }
 
 const getPresetHandler = async (
@@ -67,6 +68,7 @@ const getPresetHandler = async (
     _sort = OrderType.NAME,
     type,
     category,
+    name,
   }: adminQueries,
   {
     ids,
@@ -262,9 +264,12 @@ const getPresetHandler = async (
     })
   );
   const adminFilteredPresets = presets.filter((preset) => {
+    const nameRegex = new RegExp(name, "i");
     const isTypeFiltered = type ? preset.type === type : true;
     const isCategoryFiltered = category ? preset.category === category : true;
-    return isTypeFiltered && isCategoryFiltered;
+    const hasName = name ? nameRegex.test(preset.name) : true;
+
+    return hasName && isTypeFiltered && isCategoryFiltered;
   });
 
   if (_start) return adminFilteredPresets.slice(_start, _end);
