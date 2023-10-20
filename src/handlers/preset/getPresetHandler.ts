@@ -61,8 +61,8 @@ interface adminQueries {
 
 const getPresetHandler = async (
   {
-    _start = 0,
-    _end = 10,
+    _start,
+    _end,
     _order = OrderPriority.ADMIN_ASC,
     _sort = OrderType.NAME,
     type,
@@ -267,6 +267,7 @@ const getPresetHandler = async (
     return isTypeFiltered && isCategoryFiltered;
   });
 
+  if (_start) return adminFilteredPresets.slice(_start, _end);
   return adminFilteredPresets.slice(
     page * quantity - quantity,
     page * quantity
