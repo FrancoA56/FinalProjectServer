@@ -48,6 +48,7 @@ interface Params {
   orderPriority?: OrderPriority;
   filters?: string;
   userEmail?: string;
+  hideDisabled?: boolean;
 }
 
 interface adminQueries {
@@ -78,6 +79,7 @@ const getPresetHandler = async (
     orderPriority = _order,
     filters,
     userEmail,
+    hideDisabled = false,
   }: Params
 ) => {
   if (ids)
@@ -126,8 +128,8 @@ const getPresetHandler = async (
       [Op.and]: whereFilters,
     },
   });
-  const enabledPresets = filteredPresets.filter(
-    (filter) => !filter.dataValues.isDisabled
+  const enabledPresets = filteredPresets.filter((filter) =>
+    hideDisabled ? !filter.dataValues.isDisabled : true
   );
 
   const getReviews = async (preset: Model) => {

@@ -37,6 +37,7 @@ interface Preset {
   orderPriority?: OrderPriority;
   filters?: string;
   userEmail?: string;
+  hideDisabled?: boolean;
 }
 
 interface adminQueries {
@@ -62,6 +63,7 @@ const getPresetController = async (
       orderPriority,
       filters,
       userEmail,
+      hideDisabled,
     }: Preset = req.query;
 
     const { _start, _end, _order, _sort, type, category, name }: adminQueries =
@@ -77,6 +79,7 @@ const getPresetController = async (
         orderPriority,
         filters,
         userEmail,
+        hideDisabled,
       }
     );
     const totalCount = presets ? presets.length : 0;
