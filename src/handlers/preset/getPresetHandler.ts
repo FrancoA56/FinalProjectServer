@@ -243,6 +243,10 @@ const getPresetHandler = async (
         where: { presetId: data.id },
       });
 
+const images = await PresetImage.findAll({
+        where: { presetId: data.id },
+      });
+
       return {
         id: data.id,
         name: data.name,
@@ -258,7 +262,7 @@ const getPresetHandler = async (
         isBought: !!boughtPreset,
         isDisabled: data.isDisabled,
         release: data.createdAt,
-      };
+      };
     })
   );
   const adminFilteredPresets = presets.filter((preset) => {
