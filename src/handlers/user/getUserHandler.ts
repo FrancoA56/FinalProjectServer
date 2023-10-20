@@ -33,15 +33,18 @@ const getUserHandler = async (
   orderPriority = OrderPriority.ASC
 ) => {
   const parsedFilters = filters ? JSON.parse(filters) : {};
-  const orderOption: OrderItem[] = [[ orderType, orderPriority ]];
-
-  if (!name) return await User.findAll({
+  const orderOption: OrderItem[] = [[orderType, orderPriority]];
+  let user;
+  if (!name) {
+    user = await User.findAll({
       where: { ...parsedFilters },
       attributes: attributes,
       order: orderOption,
     });
+    return user.map((usersData) => usersData.dataValues);
+  }
 
-  return await User.findAll({
+  user = await User.findAll({
     where: {
       ...parsedFilters,
       name: {
@@ -51,6 +54,7 @@ const getUserHandler = async (
     attributes: attributes,
     order: orderOption,
   });
+  return user.map((usersData) => usersData.dataValues);
 };
 
 export default getUserHandler;
