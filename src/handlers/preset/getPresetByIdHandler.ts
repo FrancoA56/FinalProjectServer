@@ -58,11 +58,6 @@ const getPresetByIdHandler = async (
     where: { presetId: data.id },
   });
 
-
-  const images = await PresetImage.findAll({
-    where: { presetId: data.id },
-  });
-
   const preset: PresetInfo = {
     id: data.id,
     name: data.name,
