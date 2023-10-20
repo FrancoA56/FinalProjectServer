@@ -1,6 +1,7 @@
 import { Model, Op, where } from "sequelize";
-import { Invoice, InvoiceItem, Preset, Review } from "../../db";
+import { Invoice, InvoiceItem, Preset, Review, PresetImage } from "../../db";
 import getPresetByIdHandler from "./getPresetByIdHandler";
+
 
 enum PresetTypes {
   ABOUT = "about",
@@ -204,6 +205,10 @@ const getPresetHandler = async ({
           })
         : false;
 
+const images = await PresetImage.findAll({
+        where: { presetId: data.id },
+      });
+
       return {
         id: data.id,
         name: data.name,
@@ -211,7 +216,7 @@ const getPresetHandler = async ({
         color: data.defaultColor,
         type: data.type,
         category: data.category,
-        image: data.image,
+        images: images.map((img) => img.dataValues.url),
         url: data.url,
         reviews,
         ratingAverage: ratingAverage[data.id],
@@ -219,7 +224,7 @@ const getPresetHandler = async ({
         isBought: !!boughtPreset,
         isDisabled: data.isDisabled,
         release: data.createdAt,
-      };
+      };
     })
   );
   return presets.slice(page * quantity - quantity, page * quantity);
