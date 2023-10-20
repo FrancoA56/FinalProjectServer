@@ -1,4 +1,4 @@
-import { Invoice, InvoiceItem, Preset, Review } from "../../db";
+import { Invoice, InvoiceItem, Preset, PresetImage, Review } from "../../db";
 
 interface Review {
   message: string;
@@ -12,7 +12,7 @@ interface PresetInfo {
   color: string;
   type: string;
   category: string;
-  image?: string;
+  images?: string[];
   url?: string;
   reviews: Review[];
   ratingAverage: number;
@@ -55,6 +55,10 @@ const getPresetByIdHandler = async (
     ],
   });
 
+  const images = await PresetImage.findAll({
+    where: { presetId: data.id },
+  });
+
   const preset: PresetInfo = {
     id: data.id,
     name: data.name,
@@ -62,7 +66,7 @@ const getPresetByIdHandler = async (
     color: data.defaultColor,
     type: data.type,
     category: data.category,
-    image: data.image,
+    images: images.map((img) => img.dataValues.url),
     url: data.url,
     reviews,
     ratingAverage,

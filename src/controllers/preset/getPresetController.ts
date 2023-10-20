@@ -8,10 +8,25 @@ enum OrderType {
   RATING = "rating",
   RELEASE = "release",
 }
-
 enum OrderPriority {
   ASC = "a",
+  ADMIN_ASC = "ASC",
   DESC = "d",
+  ADMIN_DESC = "DESC",
+}
+
+enum TypeFilter {
+  ABOUT = "about",
+  HOME = "home",
+  CART = "cart",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
+}
+enum CategoryFilter {
+  BASIC = "basic",
+  MEDIUM = "medium",
+  PREMIUM = "premium",
 }
 
 interface Preset {
@@ -22,6 +37,15 @@ interface Preset {
   orderPriority?: OrderPriority;
   filters?: string;
   userEmail?: string;
+}
+
+interface adminQueries {
+  _start?: number;
+  _end?: number;
+  _order?: OrderPriority;
+  _sort?: OrderType;
+  type?: TypeFilter;
+  category?: CategoryFilter;
 }
 
 const getPresetController = async (
@@ -38,16 +62,23 @@ const getPresetController = async (
       filters,
       userEmail,
     }: Preset = req.query;
-    const presets = await getPresetHandler({
-      ids,
-      page,
-      quantity,
-      orderType,
-      orderPriority,
-      filters,
-      userEmail,
-    });
-    const totalCount = presets.length;
+
+    const { _start, _end, _order, _sort, type, category }: adminQueries =
+      req.query;
+
+    const presets = await getPresetHandler(
+      { _start, _end, _order, _sort, type, category: category },
+      {
+        ids,
+        page,
+        quantity,
+        orderType,
+        orderPriority,
+        filters,
+        userEmail,
+      }
+    );
+    const totalCount = presets ? presets.length : 0;
     res.setHeader("X-Total-Count", totalCount);
     res.status(200).json(presets);
   } catch (error) {
