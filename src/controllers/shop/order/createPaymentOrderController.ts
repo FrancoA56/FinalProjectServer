@@ -27,7 +27,9 @@ const createPayment = async (
 
         let paymentId: string = null;
         let href: string = "";
+
         switch (paymentMethod) {
+
             case "paypal":
                 const respOrder = await createPaymentPaypal(totalAmount);
                 paymentId = respOrder.paymentId;
