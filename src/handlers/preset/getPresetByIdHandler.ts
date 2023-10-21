@@ -1,4 +1,4 @@
-import { Invoice, InvoiceItem, Preset, Review, PresetImage } from "../../db";
+import { Invoice, InvoiceItem, Preset, PresetImage, Review } from "../../db";
 
 interface Review {
   message: string;
@@ -57,7 +57,6 @@ const getPresetByIdHandler = async (
   const images = await PresetImage.findAll({
     where: { presetId: data.id },
   });
-
 
   const preset: PresetInfo = {
     id: data.id,

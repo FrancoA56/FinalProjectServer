@@ -1,17 +1,16 @@
-import { Model, Op, where } from "sequelize";
-import { Invoice, InvoiceItem, Preset, Review, PresetImage } from "../../db";
+import { Model, Op } from "sequelize";
+import { Invoice, InvoiceItem, Preset, PresetImage, Review } from "../../db";
 import getPresetByIdHandler from "./getPresetByIdHandler";
 
-
-enum PresetTypes {
+enum TypeFilter {
   ABOUT = "about",
   HOME = "home",
-  CART = "card",
+  CART = "cart",
   SHOP = "shop",
   DETAIL = "detail",
   PROFILE = "profile",
 }
-enum PresetCategories {
+enum CategoryFilter {
   BASIC = "basic",
   MEDIUM = "medium",
   PREMIUM = "premium",
@@ -20,19 +19,24 @@ enum PresetCategories {
 enum OrderType {
   NAME = "name",
   PRICE = "price",
+  COLOR = "color",
+  TYPE = "type",
+  CATEGORY = "category",
+  RELEASE = "release",
   PURCHASED = "purchased",
   RATING = "rating",
-  RELEASE = "release",
 }
 
 enum OrderPriority {
   ASC = "a",
+  ADMIN_ASC = "ASC",
   DESC = "d",
+  ADMIN_DESC = "DESC",
 }
 
 interface Filter {
-  types?: PresetTypes[];
-  categories?: PresetCategories[];
+  types?: TypeFilter[];
+  categories?: CategoryFilter[];
   defaultColors?: string[];
 }
 
@@ -44,17 +48,40 @@ interface Params {
   orderPriority?: OrderPriority;
   filters?: string;
   userEmail?: string;
+  hideDisabled?: boolean;
 }
 
-const getPresetHandler = async ({
-  ids,
-  page = 1,
-  quantity = 10,
-  orderType = OrderType.RATING,
-  orderPriority = OrderPriority.DESC,
-  filters,
-  userEmail,
-}: Params) => {
+interface adminQueries {
+  _start?: number;
+  _end?: number;
+  _order?: OrderPriority;
+  _sort?: OrderType;
+  type?: TypeFilter;
+  category?: CategoryFilter;
+  name?: string;
+}
+
+const getPresetHandler = async (
+  {
+    _start,
+    _end,
+    _order = OrderPriority.ADMIN_ASC,
+    _sort = OrderType.NAME,
+    type,
+    category,
+    name,
+  }: adminQueries,
+  {
+    ids,
+    page = 1,
+    quantity = 10,
+    orderType = _sort,
+    orderPriority = _order,
+    filters,
+    userEmail,
+    hideDisabled = false,
+  }: Params
+) => {
   if (ids)
     return await Promise.all(
       ids.split(",").map(async (id) => {
@@ -68,28 +95,28 @@ const getPresetHandler = async ({
 
   const parsedFilters: Filter = filters ? JSON.parse(filters) : {};
   let { types = [], categories = [], defaultColors = [] } = parsedFilters;
-  
-  if (!Array.isArray(types)) types = [types]
-  if (!Array.isArray(categories)) categories = [categories]
-  if (!Array.isArray(defaultColors)) defaultColors = [defaultColors]
-  
+
+  if (!Array.isArray(types)) types = [types];
+  if (!Array.isArray(categories)) categories = [categories];
+  if (!Array.isArray(defaultColors)) defaultColors = [defaultColors];
+
   const whereFilters = [];
 
-  if (types.length)
+  if (types?.length)
     whereFilters.push({
       [Op.or]: types.map((type) => ({
         type,
       })),
     });
 
-  if (categories.length)
+  if (categories?.length)
     whereFilters.push({
       [Op.or]: categories.map((category) => ({
         category,
       })),
     });
 
-  if (defaultColors.length)
+  if (defaultColors?.length)
     whereFilters.push({
       [Op.or]: defaultColors.map((defaultColor) => ({
         defaultColor,
@@ -101,8 +128,8 @@ const getPresetHandler = async ({
       [Op.and]: whereFilters,
     },
   });
-  const enabledPresets = filteredPresets.filter(
-    (filter) => !filter.dataValues.isDisabled
+  const enabledPresets = filteredPresets.filter((filter) =>
+    hideDisabled ? !filter.dataValues.isDisabled : true
   );
 
   const getReviews = async (preset: Model) => {
@@ -123,12 +150,12 @@ const getPresetHandler = async ({
     await Promise.all(
       presets.map(async (preset) => {
         const reviews = await getReviews(preset);
-        if (!reviews.length) return 0;
+        if (!reviews?.length) return 0;
         const totalRatings = reviews.reduce(
           (sum, review) => sum + review.rating,
           0
         );
-        avgRatings[preset.dataValues.id] = totalRatings / reviews.length;
+        avgRatings[preset.dataValues.id] = totalRatings / reviews?.length;
       })
     );
 
@@ -162,24 +189,36 @@ const getPresetHandler = async ({
   const sells = await getSells(enabledPresets);
 
   const sortingFunction = (a: Model, b: Model) => {
-    const sortOrder = orderPriority === OrderPriority.ASC ? 1 : -1;
+    const sortOrder =
+      orderPriority === OrderPriority.ASC ||
+      orderPriority === OrderPriority.ADMIN_ASC
+        ? 1
+        : -1;
 
+    const aData = a.dataValues;
+    const bData = b.dataValues;
     switch (orderType) {
       case OrderType.NAME:
-        return sortOrder * a.dataValues.name.localeCompare(b.dataValues.name);
+        return sortOrder * aData.name.localeCompare(bData.name);
       case OrderType.PRICE:
-        return sortOrder * (a.dataValues.price - b.dataValues.price);
-      case OrderType.PURCHASED:
-        const purchasedA = sells[a.dataValues.id];
-        const purchasedB = sells[b.dataValues.id];
-        return sortOrder * (purchasedA - purchasedB);
+        return sortOrder * (aData.price - bData.price);
+      case OrderType.COLOR:
+        return sortOrder * aData.defaultColor.localeCompare(bData.defaultColor);
+      case OrderType.TYPE:
+        return sortOrder * aData.type.localeCompare(bData.type);
+      case OrderType.CATEGORY:
+        return sortOrder * aData.category.localeCompare(bData.category);
       case OrderType.RELEASE:
-        const dateA = new Date(a.dataValues.createdAt).getTime();
-        const dateB = new Date(b.dataValues.createdAt).getTime();
+        const dateA = new Date(aData.createdAt).getTime();
+        const dateB = new Date(bData.createdAt).getTime();
         return sortOrder * (dateA - dateB);
+      case OrderType.PURCHASED:
+        const purchasedA = sells[aData.id];
+        const purchasedB = sells[bData.id];
+        return sortOrder * (purchasedA - purchasedB);
       case OrderType.RATING:
-        const avgRatingA = averageRatings[a.dataValues.id];
-        const avgRatingB = averageRatings[b.dataValues.id];
+        const avgRatingA = averageRatings[aData.id];
+        const avgRatingB = averageRatings[bData.id];
         return sortOrder * (avgRatingA - avgRatingB);
       default:
         return 0;
@@ -204,8 +243,7 @@ const getPresetHandler = async ({
             ],
           })
         : false;
-
-const images = await PresetImage.findAll({
+      const images = await PresetImage.findAll({
         where: { presetId: data.id },
       });
 
@@ -224,10 +262,23 @@ const images = await PresetImage.findAll({
         isBought: !!boughtPreset,
         isDisabled: data.isDisabled,
         release: data.createdAt,
-      };
+      };
     })
   );
-  return presets.slice(page * quantity - quantity, page * quantity);
+  const adminFilteredPresets = presets.filter((preset) => {
+    const nameRegex = new RegExp(name, "i");
+    const isTypeFiltered = type ? preset.type === type : true;
+    const isCategoryFiltered = category ? preset.category === category : true;
+    const hasName = name ? nameRegex.test(preset.name) : true;
+
+    return hasName && isTypeFiltered && isCategoryFiltered;
+  });
+
+  if (_start) return adminFilteredPresets.slice(_start, _end);
+  return adminFilteredPresets.slice(
+    page * quantity - quantity,
+    page * quantity
+  );
 };
 
 export default getPresetHandler;
