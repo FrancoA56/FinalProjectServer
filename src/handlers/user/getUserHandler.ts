@@ -38,6 +38,8 @@ interface adminQueries {
 }
 
 const getUserHandler = async ({
+  _start,
+  _end,
   _order = OrderPriority.ASC,
   _sort = OrderType.NAME,
   id,
@@ -78,9 +80,9 @@ const getUserHandler = async ({
     ];
   }
 
-  const filter = isDisabled != undefined ? {isDisabled} : {}
-  
-  console.log(_sort,_order)
+  const filter = isDisabled != undefined ? { isDisabled } : {};
+
+  console.log(_sort, _order);
 
   const orderOption: OrderItem[] = [[_sort, _order]];
 
@@ -90,7 +92,9 @@ const getUserHandler = async ({
       attributes: attributes,
       order: orderOption,
     });
-    return user.map((usersData) => usersData.dataValues);
+    const dataUser = user.map((usersData) => usersData.dataValues);
+    if (_start) return dataUser.slice(_start, _end);
+    return dataUser;
   }
 
   user = await User.findAll({
@@ -103,7 +107,9 @@ const getUserHandler = async ({
     attributes: attributes,
     order: orderOption,
   });
-  return user.map((usersData) => usersData.dataValues);
+  const dataUser = user.map((usersData) => usersData.dataValues);
+  if (_start) return dataUser.slice(_start, _end);
+  return dataUser;
 };
 
 export default getUserHandler;
