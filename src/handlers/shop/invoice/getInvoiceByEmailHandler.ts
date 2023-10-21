@@ -1,15 +1,15 @@
 import { Invoice, InvoiceItem, Preset, User } from "../../../db";
 
-const getInvoiceByPaymentId = async (paymentId: string) => {
+const getInvoiceByEmail = async (userEmail: string) => {
 
-    const findOrder = await Invoice.findOne({
-        where: { paymentId },
+    const findOrder = await Invoice.findAll({
+        where: { userEmail },
         include: [{
             model: InvoiceItem,
             attributes: ['presetId'],
             include: [{
                 model: Preset,
-                attributes: ['price', ['name', 'presetName']],
+                attributes: ['price', ['name', 'presetName'], "defaultColor", "type", "category"],
             }],
         },
         {
@@ -18,17 +18,19 @@ const getInvoiceByPaymentId = async (paymentId: string) => {
         }
         ],
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['updatedAt']
         }
     })
 
     const data: undefined[] = [];
     if (!findOrder) return { data };
 
-    const { id } = findOrder.dataValues;
+    const { id } = findOrder[0].dataValues;
 
-    return { id, data: findOrder.dataValues }
+    const response = findOrder.map(invoice => invoice.dataValues)
+
+    return { id, data: response }
 }
 
 
-export default getInvoiceByPaymentId;
+export default getInvoiceByEmail;
