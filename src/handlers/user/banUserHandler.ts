@@ -14,11 +14,12 @@ const banUserHandler = async (email: string | undefined) => {
     { where: { email } }
   );
 
-
+    const {id,name,logo} = user.dataValues;
   return {
+    id,
     email,
-    name: user.dataValues.name,
-    logo: user.dataValues.logo,
+    name,
+    logo,
     isDisabled: true,
   };
 };

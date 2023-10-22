@@ -27,13 +27,25 @@ const attributes: string[] = [
   "createdAt",
 ];
 
-const getUserHandler = async (
-  id: number | undefined,
-  name: string | undefined,
-  filters: string | undefined,
-  orderType = OrderType.NAME,
-  orderPriority = OrderPriority.ASC
-) => {
+interface adminQueries {
+  _start?: number;
+  _end?: number;
+  _order?: OrderPriority;
+  _sort?: OrderType;
+  id?: number;
+  name?: string;
+  isDisabled?: boolean;
+}
+
+const getUserHandler = async ({
+  _start,
+  _end,
+  _order = OrderPriority.ASC,
+  _sort = OrderType.NAME,
+  id,
+  name,
+  isDisabled,
+}: adminQueries) => {
   let user;
   if (id) {
     user = await User.findByPk(id);
@@ -50,36 +62,44 @@ const getUserHandler = async (
       isDisabled,
       createdAt,
     } = user.dataValues;
-    return [{
-      id,
-      name,
-      email,
-      logo,
-      about,
-      firstname,
-      lastname,
-      country,
-      city,
-      zipcode,
-      isDisabled,
-      createdAt,
-    }];
+    return [
+      {
+        id,
+        name,
+        email,
+        logo,
+        about,
+        firstname,
+        lastname,
+        country,
+        city,
+        zipcode,
+        isDisabled,
+        createdAt,
+      },
+    ];
   }
 
-  const parsedFilters = filters ? JSON.parse(filters) : {};
-  const orderOption: OrderItem[] = [[orderType, orderPriority]];
+  const filter = isDisabled != undefined ? { isDisabled } : {};
+
+  console.log(_sort, _order);
+
+  const orderOption: OrderItem[] = [[_sort, _order]];
+
   if (!name) {
     user = await User.findAll({
-      where: { ...parsedFilters },
+      where: { ...filter },
       attributes: attributes,
       order: orderOption,
     });
-    return user.map((usersData) => usersData.dataValues);
+    const dataUser = user.map((usersData) => usersData.dataValues);
+    if (_start) return dataUser.slice(_start, _end);
+    return dataUser;
   }
 
   user = await User.findAll({
     where: {
-      ...parsedFilters,
+      ...filter,
       name: {
         [Op.iLike]: `%${name}%`,
       },
@@ -87,7 +107,9 @@ const getUserHandler = async (
     attributes: attributes,
     order: orderOption,
   });
-  return user.map((usersData) => usersData.dataValues);
+  const dataUser = user.map((usersData) => usersData.dataValues);
+  if (_start) return dataUser.slice(_start, _end);
+  return dataUser;
 };
 
 export default getUserHandler;
