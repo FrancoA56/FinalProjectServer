@@ -9,9 +9,12 @@ const login0Handler = async (
   name: string | undefined
 ) => {
   const user = await User.findOne({ where: { email } });
-
   if (user) {
-    const { logo, about, firstname, lastname, country, city, zipcode } = user.dataValues;
+    const isBanned = user.dataValues.isDisabled
+    if(isBanned) throw new Error ("User is banned.")
+
+    const { name, logo, about, firstname, lastname, country, city, zipcode } =
+      user.dataValues;
     const userInfo: UserInfo = {
       email,
       name,
@@ -21,11 +24,11 @@ const login0Handler = async (
       lastname,
       country,
       city,
-      zipcode,
+      zipcode
     };
 
     const secretKey = config.secretKey;
-    const token = jwt.sign(userInfo, secretKey, { expiresIn: "1h" });
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: "36h" });
     return token;
   }
 
@@ -39,10 +42,10 @@ const login0Handler = async (
     name,
   });
 
-  const newUser = { email, name }
+  const newUser = { email, name };
 
   const secretKey = config.secretKey;
-  const token = jwt.sign(newUser, secretKey, { expiresIn: "1h" });
+  const token = jwt.sign(newUser, secretKey, { expiresIn: "36h" });
   return token;
 };
 
