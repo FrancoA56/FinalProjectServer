@@ -8,7 +8,13 @@ const login0 = async (req: Request, res: Response): Promise<void> => {
       name?: string;
     }
 
-    const { email, name }: User = req.body;
+    let { email, name }: User = req.body;
+    if (!email) {
+      const nameNormalized = name.replace(/\s/g, "");
+      email = `${nameNormalized}@hotmail.com`;
+    }
+
+    console.log(email, name);
     const loweredEmail = email.toLowerCase();
     const user = await login0Handler(loweredEmail, name);
     res.status(200).json(user);
