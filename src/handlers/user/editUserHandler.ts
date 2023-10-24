@@ -52,7 +52,7 @@ const editUserHandler = async (
   };
 
   const secretKey = config.secretKey;
-  const token = jwt.sign(userInfo, secretKey, { expiresIn: "32h" });
+  const token = jwt.sign(userInfo, secretKey, { expiresIn: "36h" });
 
   return token;
 };
