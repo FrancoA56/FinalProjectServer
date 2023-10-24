@@ -22,6 +22,7 @@ interface Preset {
   category?: PresetCategories;
   images?: string[];
   url?: string;
+  isDisabled?: boolean;  
 }
 
 const addPresetHandler = async ({
@@ -32,6 +33,7 @@ const addPresetHandler = async ({
   category = PresetCategories.BASIC,
   images,
   url,
+  isDisabled = false,
 }: Preset) => {
   if (!name || !price || !defaultColor || !type || !category)
     throw new Error("Missing data to create a Preset");
@@ -42,7 +44,7 @@ const addPresetHandler = async ({
     defaultColor,
     type,
     category,
-    isDisabled: false,
+    isDisabled,
     url,
   });
 
