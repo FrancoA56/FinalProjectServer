@@ -28,9 +28,10 @@ const addPresetController = async (
       category?: PresetCategories;
       images?: string[];
       url?: string;
+      isDisabled?: boolean;
     }
 
-    const { name, price, defaultColor, type, category, images, url }: Preset =
+    const { name, price, defaultColor, type, category, images, url, isDisabled }: Preset =
       req.body;
 
     const preset = await addPresetHandler({
@@ -41,6 +42,7 @@ const addPresetController = async (
       category,
       images,
       url,
+      isDisabled,
     });
     res.status(201).json(preset);
   } catch (error) {
