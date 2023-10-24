@@ -28,7 +28,7 @@ const login0Handler = async (
     };
 
     const secretKey = config.secretKey;
-    const token = jwt.sign(userInfo, secretKey, { expiresIn: "32h" });
+    const token = jwt.sign(userInfo, secretKey, { expiresIn: "36h" });
     return token;
   }
 
@@ -45,7 +45,7 @@ const login0Handler = async (
   const newUser = { email, name };
 
   const secretKey = config.secretKey;
-  const token = jwt.sign(newUser, secretKey, { expiresIn: "32h" });
+  const token = jwt.sign(newUser, secretKey, { expiresIn: "36h" });
   return token;
 };
 
