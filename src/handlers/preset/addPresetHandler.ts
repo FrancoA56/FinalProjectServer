@@ -33,7 +33,7 @@ const addPresetHandler = async ({
   category = PresetCategories.BASIC,
   images,
   url,
-  isDisabled
+  isDisabled = false,
 }: Preset) => {
   if (!name || !price || !defaultColor || !type || !category)
     throw new Error("Missing data to create a Preset");
