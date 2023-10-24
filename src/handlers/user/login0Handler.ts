@@ -10,8 +10,8 @@ const login0Handler = async (
 ) => {
   const user = await User.findOne({ where: { email } });
   if (user) {
-    const isBan = user.dataValues.isDisabled
-    if(isBan) throw new Error ("User is banned.")
+    const isBanned = user.dataValues.isDisabled
+    if(isBanned) throw new Error ("User is banned.")
 
     const { name, logo, about, firstname, lastname, country, city, zipcode } =
       user.dataValues;
