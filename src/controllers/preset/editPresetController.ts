@@ -47,7 +47,7 @@ const editPresetController = async (
     const preset = await editPresetHandler(id, {
       name,
       price,
-      color: color,
+      color,
       type,
       category,
       isDisabled,
