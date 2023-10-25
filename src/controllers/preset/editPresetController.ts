@@ -36,7 +36,7 @@ const editPresetController = async (
     const {
       name,
       price,
-      color,
+      defaultColor: color,
       type,
       category,
       isDisabled,
