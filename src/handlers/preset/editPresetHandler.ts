@@ -19,7 +19,7 @@ interface Preset {
   id?: number;
   name?: string;
   price?: number;
-  color?: string;
+  defaultColor?: string;
   type?: PresetTypes;
   category?: PresetCategories;
   isDisabled?: boolean;
