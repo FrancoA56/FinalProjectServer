@@ -23,7 +23,7 @@ interface Preset {
   type?: PresetTypes;
   category?: PresetCategories;
   isDisabled?: boolean;
-  image?: string;
+  images?: string[];
   url?: string;
 }
 
