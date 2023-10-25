@@ -29,7 +29,7 @@ const editPresetController = async (
       type?: PresetTypes;
       category?: PresetCategories;
       isDisabled?: boolean;
-      image?: string;
+      images?: string[];
       url?: string;
     }
     const { id }: Preset = req.params;
@@ -40,17 +40,18 @@ const editPresetController = async (
       type,
       category,
       isDisabled,
-      image,
+      images,
       url,
-    }: Preset = req.query;
+    }: Preset = req.body;
+
     const preset = await editPresetHandler(id, {
       name,
       price,
-      defaultColor: color,
+      color: color,
       type,
       category,
       isDisabled,
-      image,
+      images,
       url,
     });
     res.status(200).json(preset);

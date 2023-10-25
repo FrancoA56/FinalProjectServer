@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getInvoiceHandler from "../../handlers/shop/invoice/getInvoiceByEmailHandler";
+import getInvoiceHandler from "../../../handlers/shop/invoice/getInvoiceByEmailHandler";
 
 const getInvoiceByEmailController = async (
   req: Request,
@@ -10,7 +10,7 @@ const getInvoiceByEmailController = async (
       email?: string;
     }
 
-    const { email }: IParam = req.query;
+    const { email }: IParam = req.params;
 
     const response = await getInvoiceHandler(email);
     

@@ -19,11 +19,11 @@ interface Preset {
   id?: number;
   name?: string;
   price?: number;
-  defaultColor?: string;
+  color?: string;
   type?: PresetTypes;
   category?: PresetCategories;
   isDisabled?: boolean;
-  image?: string;
+  images?: string[];
   url?: string;
 }
 
