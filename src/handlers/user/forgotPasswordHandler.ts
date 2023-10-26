@@ -25,7 +25,7 @@ const forgotPasswordHandler = async (email: string | undefined) => {
       <br />
     <h2>¡Hello!</h2>
       <br />
-    <p style = "font-size: 15px;">Click <a href="${urlClient}/reset-password/${token}" target=”_blank” >This Link</a> to recover your password.</p>
+    <p style = "font-size: 15px;">Click <a href="https://codecraftedtemplates.vercel.app/reset-password/${token}" target=”_blank” >This Link</a> to recover your password.</p>
     <p style = "font-size: 15px;">If you did not request this change, please ignore this email.</p>
       <br />
     <h4 style = "font-size: 13px;">Sincerely,</h4>
