@@ -14,6 +14,7 @@ import {
 } from "sequelize-typescript";
 import PresetImage from "./PresetImage";
 import InvoiceDetail from "./InvoiceItem";
+import Review from "./Review";
 import OrderDetail from "./OrderItem";
 import { HasManySetAssociationsMixin, NonAttribute } from "sequelize";
 
@@ -95,6 +96,9 @@ class Preset extends Model<Preset> {
 
   @HasMany(() => PresetImage)
   images!: NonAttribute<PresetImage[]>;
+
+  @HasMany(() => Review)
+  reviews!:Review[];
 
   declare setImages: HasManySetAssociationsMixin<PresetImage, PresetImage["id"]>;
 }
