@@ -1,4 +1,5 @@
-import { Invoice, InvoiceItem, Preset, User } from "../../../db";
+import { getAttributes } from "sequelize-typescript";
+import { Invoice, InvoiceItem, Preset, User, Review } from "../../../db";
 
 const getInvoiceByEmail = async (userEmail: string) => {
 
@@ -10,6 +11,12 @@ const getInvoiceByEmail = async (userEmail: string) => {
             include: [{
                 model: Preset,
                 attributes: ['price', ['name', 'presetName'], "defaultColor", "type", "category"],
+                include: [{
+                    model: Review,
+                    where: { userEmail },
+                    attributes: ['rating', 'ratingMessage', 'presetId'],
+                    required: false
+                }]
             }],
         },
         {
