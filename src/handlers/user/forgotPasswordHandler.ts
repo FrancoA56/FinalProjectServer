@@ -3,7 +3,7 @@ import { User } from "../../db";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import createTransporter from "../../utils/emailConfig";
-const { secretKey, cors: baseUrl } = config;
+const { secretKey, cors: baseUrl, urlClient } = config;
 
 const forgotPasswordHandler = async (email: string | undefined) => {
   const user = await User.findOne({ where: { email } });
@@ -25,7 +25,7 @@ const forgotPasswordHandler = async (email: string | undefined) => {
       <br />
     <h2>¡Hello!</h2>
       <br />
-    <p style = "font-size: 15px;">Click <a href="${baseUrl}/reset-password/${token}" target=”_blank” >This Link</a> to recover your password.</p>
+    <p style = "font-size: 15px;">Click <a href="${urlClient}/reset-password/${token}" target=”_blank” >This Link</a> to recover your password.</p>
     <p style = "font-size: 15px;">If you did not request this change, please ignore this email.</p>
       <br />
     <h4 style = "font-size: 13px;">Sincerely,</h4>
