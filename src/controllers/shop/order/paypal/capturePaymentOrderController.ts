@@ -22,7 +22,7 @@ interface IProduct {
 const captureOrder = async (
     req: Request,
     res: Response) => {
-      
+
 
     try {
 
@@ -31,7 +31,7 @@ const captureOrder = async (
         if (typeof token === 'string') {
             await capturePaymentOrder(token);
 
-            await UpdatePaymentStatus(token);
+            await UpdatePaymentStatus(token, false);
 
             const invoice = await getInvoiceByPaymentId(token);
 
@@ -45,7 +45,7 @@ const captureOrder = async (
         res.send(templateSuccessful);
 
     } catch (error) {
-       
+
         res.status(500).send(templateErr);
     }
 }
