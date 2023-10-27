@@ -7,7 +7,8 @@ import {
     PrimaryKey,
     AutoIncrement,
     ForeignKey,
-    IsEmail
+    IsEmail,
+    BelongsTo
 } from "sequelize-typescript";
 import User from "./User";
 import Preset from "./Preset";
@@ -39,6 +40,12 @@ class Review extends Model<Review> {
     @ForeignKey(() => Preset)
     @Column
     presetId!: number;
+
+    @BelongsTo(() => Preset)
+    preset!: Preset;
+  
+    @BelongsTo(() => User)
+    user!: User;
 }
 
 export default Review;

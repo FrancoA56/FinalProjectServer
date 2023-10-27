@@ -1,4 +1,4 @@
-import { Review } from "../../db";
+import { Review, User, Preset } from "../../db";
 
 interface ReviewFilters {
   id?: number;
@@ -22,7 +22,17 @@ const getReviewHandler = async ({ id, userEmail, presetId }: ReviewFilters) => {
   const filters: Record<any, any> = {};
   if (userEmail) filters.userEmail = userEmail;
   if (presetId) filters.presetId = presetId;
-  const reviews = await Review.findAll({ where: filters });
+  const reviews = await Review.findAll({
+    where: filters,
+    include: [{
+      model: Preset,
+      attributes: ['name'],
+    },
+    {
+      model: User,
+      attributes: ['name'],
+    }]
+  });
 
   return reviews.map((review) => {
     const data = review.dataValues;
@@ -32,6 +42,8 @@ const getReviewHandler = async ({ id, userEmail, presetId }: ReviewFilters) => {
       presetId: data.presetId,
       message: data.ratingMessage,
       rating: data.rating,
+      user: data.user,
+      preset: data.preset
     };
   });
 };

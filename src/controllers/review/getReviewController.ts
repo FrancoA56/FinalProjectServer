@@ -18,6 +18,13 @@ const getReviewController = async (
       userEmail: email,
       presetId,
     });
+    
+    let totalCount = 0;
+    if (Array.isArray(reviews)) {
+      totalCount = reviews.length;
+    }
+
+    res.setHeader("X-Total-Count", totalCount);
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
