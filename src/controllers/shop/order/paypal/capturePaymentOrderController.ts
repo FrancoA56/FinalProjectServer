@@ -31,7 +31,7 @@ const captureOrder = async (
         if (typeof token === 'string') {
             await capturePaymentOrder(token);
 
-            await UpdatePaymentStatus(token, false);
+            await UpdatePaymentStatus(token, false, null);
 
             const invoice = await getInvoiceByPaymentId(token);
 

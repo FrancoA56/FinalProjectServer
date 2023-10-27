@@ -2,22 +2,16 @@ import { Invoice } from "../../../db";
 
 const addInvoiceHandler = async (
     paymentId: string | undefined,
-    fromAdmin: boolean
+    fromAdmin: boolean,
+    status: boolean
 ) => {
 
-
     if (fromAdmin) {
-        const invoice = await Invoice.findOne({
-            where: { id: paymentId }
-        });
-
-        const newIsPaid = !invoice.dataValues.isPaid;
-
         await Invoice.update(
-            { isPaid: newIsPaid },
+            { isPaid: status },
             { where: { id: paymentId } }
         );
-        return invoice.dataValues
+        return { id: paymentId }
 
     } else {
         await Invoice.update(

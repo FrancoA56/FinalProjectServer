@@ -9,10 +9,11 @@ const editStatusPaid = async (
         interface IParam {
             id?: string;
         }
-
         const { id }: IParam = req.params;
 
-        const response = await updateStatusPayment(id, true);
+        const { isPaid } = req.body;
+
+        const response = await updateStatusPayment(id, true, isPaid);
 
         res.status(200).json(response);
     } catch (error) {
