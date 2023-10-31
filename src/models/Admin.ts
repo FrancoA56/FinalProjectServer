@@ -26,17 +26,24 @@ class Admin extends Model<Admin> {
   @Column
   name!: string;
 
+  @Column
+  isDisabled!:boolean;
+
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
 
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
 
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
+
 }
 
 export default Admin;

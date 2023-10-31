@@ -7,13 +7,14 @@ const register = async (req: Request, res: Response): Promise<void> => {
       email?: string;
       password?: string;
       name?: string;
-      logo?: string;
+      
     }
-    const { email, password, name, logo }: User = req.body;
-    const user = await registerHandler(email, password, name, logo);
+    const { email, password, name }: User = req.body;
+    const loweredEmail = email.toLowerCase();
+    const user = await registerHandler(loweredEmail, password, name);
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 

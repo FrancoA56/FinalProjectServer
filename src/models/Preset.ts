@@ -9,19 +9,32 @@ import {
   Length,
   IsDate,
   AutoIncrement,
-  BelongsToMany,
   HasMany,
+  DataType,
 } from "sequelize-typescript";
-import User from "./User";
-import UserPreset from "./UserPreset";
-import ShoppingListItem from "./ShoppingListItem";
+import PresetImage from "./PresetImage";
+import InvoiceDetail from "./InvoiceItem";
+import Review from "./Review";
+import OrderDetail from "./OrderItem";
+import { HasManySetAssociationsMixin, NonAttribute } from "sequelize";
 
 enum PresetTypes {
   ABOUT = "about",
   HOME = "home",
-  FORM = "form",
-  CARD = "card",
+  CART = "cart",
+  SHOP = "shop",
+  DETAIL = "detail",
+  PROFILE = "profile",
 }
+
+enum PresetCategories {
+  BASIC = "basic",
+  MEDIUM = "medium",
+  PREMIUM = "premium",
+}
+
+const presetTypes = Object.values(PresetTypes);
+const presetCategories = Object.values(PresetCategories);
 
 @Table
 class Preset extends Model<Preset> {
@@ -37,11 +50,21 @@ class Preset extends Model<Preset> {
   @Column
   price!: number;
 
+  @Column
+  defaultColor!: string;
+
   @Column({
-    type: "ENUM",
-    values: Object.values(PresetTypes),
+    type: DataType.ENUM(...presetTypes),
   })
   type!: PresetTypes;
+
+  @Column({
+    type: DataType.ENUM(...presetCategories),
+  })
+  category!: PresetCategories;
+
+  @Column
+  url!: string;
 
   @Column
   isDisabled!: boolean;
@@ -52,21 +75,32 @@ class Preset extends Model<Preset> {
 
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
 
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
 
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
 
-  @HasMany(() => ShoppingListItem)
-  shoppingListItems!: ShoppingListItem[];
+  @HasMany(() => InvoiceDetail)
+  invoiceDetails!: InvoiceDetail[];
 
-  @BelongsToMany(() => User, () => UserPreset)
-  users!: User[];
+  @HasMany(() => OrderDetail)
+  orderDetails!: OrderDetail[];
+
+  @HasMany(() => PresetImage)
+  images!: NonAttribute<PresetImage[]>;
+
+  @HasMany(() => Review)
+  reviews!:Review[];
+
+  declare setImages: HasManySetAssociationsMixin<PresetImage, PresetImage["id"]>;
 }
 
 export default Preset;

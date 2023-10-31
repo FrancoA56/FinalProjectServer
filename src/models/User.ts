@@ -10,21 +10,28 @@ import {
   Length,
   IsUrl,
   IsDate,
-  BelongsToMany,
   HasMany,
+  HasOne,
+  AutoIncrement,
 } from "sequelize-typescript";
-import Preset from "./Preset";
-import UserPreset from "./UserPreset";
-import ShoppingList from "./ShoppingList";
+
+import Invoice from "./Invoice";
+import Order from "./Order";
+import Review from "./Review";
 
 @Table
 class User extends Model<User> {
+  
+  @AutoIncrement
+  @Column
+  id?:number;
+
   @IsEmail
   @PrimaryKey
   @Column
   email!: string;
 
-  @Length({ min: 8, max: 30 })
+  @Length({ min: 8 })
   @Column
   password!: string;
 
@@ -36,23 +43,50 @@ class User extends Model<User> {
   @Column
   logo!: string;
 
+  @Column
+  about!: string;
+
+  @Column
+  firstname!: string;
+
+  @Column
+  lastname!: string;
+
+  @Column
+  country!: string;
+
+  @Column
+  city!: string;
+
+  @Column
+  zipcode!: number;
+
+  @Column
+  isDisabled!: boolean;
+
   @IsDate
   @CreatedAt
+  @Column
   createdAt!: Date;
 
   @IsDate
   @UpdatedAt
+  @Column
   updatedAt!: Date;
 
   @IsDate
   @DeletedAt
+  @Column
   deletedAt?: Date;
 
-  @HasMany(() => ShoppingList)
-  shoppingLists!: ShoppingList[];
+  @HasMany(() => Invoice)
+  invoices!: Invoice[];
 
-  @BelongsToMany(() => Preset, () => UserPreset)
-  presets!: Preset[];
+  @HasOne(() => Order)
+  order!: Order;
+
+  @HasMany(() => Review)
+  reviews!: Review[];
 }
 
 export default User;

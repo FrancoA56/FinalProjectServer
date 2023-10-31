@@ -12,6 +12,17 @@ const config = {
  port: process.env.API_PORT,
  host: process.env.API_HOST,
  cors: process.env.CORS,
+ secretKey: process.env.SECRET_KEY,
+ dbDeploy: process.env.DB_DEPLOY,
+ paypalApiClient: process.env.PAYPAL_API_CLIENT,
+ paypalApiSecret: process.env.PAYPAL_API_SECRET,
+ paypalApi: process.env.PAYPAL_API,
+ urlClient: process.env.URL_CLIENT,
+ senderEmail: process.env.SENDER_EMAIL,
+ senderPassword: process.env.SENDER_PASSWORD,
+ gmailIdClient: process.env.GMAIL_ID_CLIENT,
+ gmailSecretClient: process.env.GMAIL_SECRET_CLIENT, 
+ gmailRefreshToken: process.env.GMAIL_REFRESH_TOKEN
 };
 
 export default config;
